@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 
@@ -18,8 +19,12 @@ class Map extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const boundsUpdated = !_.isEqual(this.state.bounds, nextState.bounds)
+    return boundsUpdated;
+  }
+
   render() {
-    console.log(this.state.bounds);
     return (
       <div>
         <MapboxMap
@@ -30,7 +35,7 @@ class Map extends React.Component {
               width: '100vw',
               height: '100vh'
             }}
-            onResize={(map) => { this.setState({ bounds: map.getBounds() }) }}
+            onRender={(map) => { this.setState({ bounds: map.getBounds() }) }}
           >
             <Layer type="symbol" id="marker" layout={{ 'icon-image': 'bicycle-15' }}>
               { this.props.locations.map((location) => (
