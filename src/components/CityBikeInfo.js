@@ -13,10 +13,20 @@ async function asyncForEach(array, callback) {
 
 const CityBikeInfo = () => {
   const stationIds = [133, 134, 290];
+  const [allStations, setAllStations] = useState(null);
   const [stations, setStations] = useState([]);
   const client = useApolloClient();
 
-  const CITYBIKEINFO = gql`
+  const GET_ALL_STATIONS = gql`
+  query getAllStations {
+    bikeRentalStations {
+      stationId
+      lat
+      lon
+    }
+  }
+  `
+  const STAIONS_INFO = gql`
   query getStation($id: String!) {
     bikeRentalStation(id:$id) {
       stationId
@@ -29,19 +39,34 @@ const CityBikeInfo = () => {
   }
   `
   useEffect(() => {
-    let stationsArray = [];
-    const getStationInfo = async () => {
-      await asyncForEach(stationIds, async (id) => {
-        const { data } = await client.query({
-          query: CITYBIKEINFO,
-          variables: {id},
+    if (!allStations) {
+      let allStationsArray = [];
+
+      const getAllStations = async () => {
+        await asyncForEach(stationIds, async (id) => {
+          const { data } = await client.query({
+            query: GET_ALL_STATIONS,
+            variables: {id},
+          });
+          allStationsArray = data.bikeRentalStations;
         });
-        stationsArray = [...stationsArray, data.bikeRentalStation];
-      });
-      setStations([...stationsArray])
+        setAllStations([...allStationsArray])
+      }
+      getAllStations();
     }
-    getStationInfo();
-  }, [])
+  })
+
+  let stationsArray = [];
+  const getStationInfo = async () => {
+    await asyncForEach(stationIds, async (id) => {
+      const { data } = await client.query({
+        query: STAIONS_INFO,
+        variables: {id},
+      });
+      stationsArray = [...stationsArray, data.bikeRentalStation];
+    });
+    setStations([...stationsArray])
+  }
 
   return (
     <div>
