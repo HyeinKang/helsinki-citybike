@@ -40,17 +40,11 @@ const CityBikeInfo = () => {
   `
   useEffect(() => {
     if (!allStations) {
-      let allStationsArray = [];
-
       const getAllStations = async () => {
-        await asyncForEach(stationIds, async (id) => {
-          const { data } = await client.query({
-            query: GET_ALL_STATIONS,
-            variables: {id},
-          });
-          allStationsArray = data.bikeRentalStations;
+        const { data } = await client.query({
+          query: GET_ALL_STATIONS,
         });
-        setAllStations([...allStationsArray])
+        setAllStations(data.bikeRentalStations);
       }
       getAllStations();
     }
