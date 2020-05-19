@@ -14,10 +14,12 @@ class Map extends React.Component {
     this.state = {
       center: [24.964421, 60.197636],
       zoom: [15],
+      bounds: []
     }
   }
 
   render() {
+    console.log(this.state.bounds);
     return (
       <div>
         <MapboxMap
@@ -25,9 +27,10 @@ class Map extends React.Component {
             center={this.state.center}
             zoom={this.state.zoom}
             containerStyle={{
-              height: '100vh',
-              width: '100%'
+              width: '100vw',
+              height: '100vh'
             }}
+            onResize={(map) => { this.setState({ bounds: map.getBounds() }) }}
           >
             <Layer type="symbol" id="marker" layout={{ 'icon-image': 'bicycle-15' }}>
               { this.props.locations.map((location) => (
