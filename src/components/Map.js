@@ -14,17 +14,18 @@ class Map extends React.Component {
 
     this.state = {
       center: [24.964421, 60.197636],
-      zoom: [15],
-      bounds: []
+      zoom: [15]
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const boundsUpdated = !_.isEqual(this.state.bounds, nextState.bounds)
-    return boundsUpdated;
+    const locationUpdated = !_.isEqual(this.props.locations, nextProps.locations)
+    return boundsUpdated || locationUpdated;
   }
 
   render() {
+    const { updateBounds, locations } = this.props;
     return (
       <div>
         <MapboxMap
@@ -35,17 +36,17 @@ class Map extends React.Component {
               width: '100vw',
               height: '100vh'
             }}
-            onRender={(map) => { this.setState({ bounds: map.getBounds() }) }}
+            onRender={(map) => { updateBounds(map.getBounds()) }}
           >
             <Layer type="symbol" id="marker" layout={{ 'icon-image': 'bicycle-15' }}>
-              { this.props.locations.map((location) => (
+              { locations.map((location) => (
                 <Feature coordinates={[location.lon, location.lat]} key={location.stationId} />
               ))}
             </Layer>
-          { this.props.locations.map((location) => (
+          { locations.map((location) => (
             <Popup coordinates={[location.lon, location.lat]} key={location.stationId} >
               <div>{location.name}</div>
-              <div>{location.bikesAvailable}/{location.spacesAvailable}</div>
+              <div>{location.bikesAvailable}/{location.bikesAvailable + location.spacesAvailable}</div>
             </Popup>
           ))}
         </MapboxMap>

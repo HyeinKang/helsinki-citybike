@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import { useApolloClient } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import _ from 'lodash';
 
 import Map from './Map';
 
@@ -12,9 +12,10 @@ async function asyncForEach(array, callback) {
 }
 
 const CityBikeInfo = () => {
-  const stationIds = [133, 134, 290];
+  // const stationIds = [133, 134, 290];
   const [allStations, setAllStations] = useState(null);
   const [stations, setStations] = useState([]);
+  const [bounds, setBounds] = useState(null);
   const client = useApolloClient();
 
   const GET_ALL_STATIONS = gql`
@@ -38,6 +39,28 @@ const CityBikeInfo = () => {
     }
   }
   `
+  
+  const processBounds = () => {
+    if (!bounds) return false;
+
+    const northMost = bounds._ne.lng;
+    const eastMost = bounds._ne.lat;
+    const southMost = bounds._sw.lng;
+    const westMost = bounds._sw.lat;
+
+    let selectedStations = [];
+    !!allStations && allStations.forEach((station) => {
+      const lonInsideBound = northMost >= station.lon && station.lon >= southMost;
+      const latInsideBound = eastMost >= station.lat && station.lat >= westMost;
+      if(lonInsideBound && latInsideBound) {
+        selectedStations = [...selectedStations, station]
+      }
+    });
+
+    const stationIds = _.map(selectedStations, 'stationId');
+    getStationInfo(stationIds);
+  }
+
   useEffect(() => {
     if (!allStations) {
       const getAllStations = async () => {
@@ -48,10 +71,13 @@ const CityBikeInfo = () => {
       }
       getAllStations();
     }
-  })
+    if(!!bounds) {
+      processBounds();
+    }
+  }, [bounds, allStations, client, GET_ALL_STATIONS])
 
   let stationsArray = [];
-  const getStationInfo = async () => {
+  const getStationInfo = async (stationIds) => {
     await asyncForEach(stationIds, async (id) => {
       const { data } = await client.query({
         query: STAIONS_INFO,
@@ -62,9 +88,13 @@ const CityBikeInfo = () => {
     setStations([...stationsArray])
   }
 
+  const updateBounds = (newBounds, oldBounds) => {
+    setBounds(newBounds);
+  }
+
   return (
     <div>
-      <Map locations={stations} />
+      <Map locations={stations} updateBounds={updateBounds} />
     </div>
   );
 }
