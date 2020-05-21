@@ -21,6 +21,8 @@
   border-radius: 9999px;
   background-color: red;
   margin-left: 12px;
+  opacity: 1;
+  transition: opacity .2s;
 }
 
 .indicator.safe {
@@ -29,6 +31,10 @@
 
 .indicator.warning {
   background-color: orange;
+}
+
+.indicator.is-loading {
+  opacity: 0;
 }
 
 .divider {

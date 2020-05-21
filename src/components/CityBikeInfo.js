@@ -16,6 +16,7 @@ const CityBikeInfo = () => {
   const [allStations, setAllStations] = useState(null);
   const [stations, setStations] = useState([]);
   const [bounds, setBounds] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const client = useApolloClient();
 
   const GET_ALL_STATIONS = gql`
@@ -42,6 +43,7 @@ const CityBikeInfo = () => {
   
   const processBounds = () => {
     if (!bounds) return false;
+    setIsLoading(true);
 
     const northMost = bounds._ne.lng;
     const eastMost = bounds._ne.lat;
@@ -85,6 +87,10 @@ const CityBikeInfo = () => {
       });
       stationsArray = [...stationsArray, data.bikeRentalStation];
     });
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 30)
+
     setStations([...stationsArray])
   }
 
@@ -94,7 +100,7 @@ const CityBikeInfo = () => {
 
   return (
     <div>
-      <Map locations={stations} updateBounds={updateBounds} />
+      <Map locations={stations} isLoading={isLoading} updateBounds={updateBounds} />
     </div>
   );
 }

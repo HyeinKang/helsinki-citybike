@@ -24,11 +24,12 @@ class Map extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     const boundsUpdated = !_.isEqual(this.state.bounds, nextState.bounds)
     const locationUpdated = !_.isEqual(this.props.locations, nextProps.locations)
-    return boundsUpdated || locationUpdated;
+    const isLoadingUpdated= !_.isEqual(this.props.isLoading, nextProps.isLoading)
+    return boundsUpdated || locationUpdated || isLoadingUpdated;
   }
 
   render() {
-    const { updateBounds, locations } = this.props;
+    const { updateBounds, locations, isLoading } = this.props;
 
     const onMapLoad = map => {
       /* Instantiate new controls with custom event handlers */
@@ -57,8 +58,8 @@ class Map extends React.Component {
 
       return (
         <Popup coordinates={[location.lon, location.lat]} key={location.stationId} >
-          <div className="station-name"><span>{location.name}</span> <div className={`${indicator} indicator`}></div></div>
-          <div>{bikeAvailability}<span className="divider">/</span>{stationCapability}</div>
+          <div className="station-name"><span>{location.name}</span> <div className={`${indicator}  ${isLoading ? "is-loading" : ""} indicator`}></div></div>
+          <div className={`avilability`}>{bikeAvailability}<span className="divider">/</span>{stationCapability}</div>
         </Popup>
       )
     }
