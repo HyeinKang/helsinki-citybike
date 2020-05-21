@@ -1,18 +1,14 @@
-/* Idea from Stack Overflow https://stackoverflow.com/a/51683226  */
-class MapboxGLButtonControl {
-  constructor({className = "", title = "", eventHandler}) {
-    console.log('eventHandler: ', eventHandler);
-    this._className = className;
-    this._title = title;
-    this._eventHandler = eventHandler;
-  }
+import React from 'react';
 
+/* Idea from Stack Overflow https://stackoverflow.com/a/51683226  */
+class MapboxGLButtonControl extends React.Component {
   onAdd(map) {
     this._btn = document.createElement("button");
-    this._btn.className = "mapboxgl-ctrl-icon" + " " + this._className;
+    this._btn.className = `mapboxgl-ctrl-icon ${this.props.className}`;
     this._btn.type = "button";
-    this._btn.title = this._title;
-    this._btn.onclick = this._eventHandler;
+    this._btn.innerHTML = this.props.innerHTML || "";
+    this._btn.title = this.props.title;
+    this._btn.onclick = this.props.eventHandler;
 
     this._container = document.createElement("div");
     this._container.className = "mapboxgl-ctrl-group mapboxgl-ctrl";
