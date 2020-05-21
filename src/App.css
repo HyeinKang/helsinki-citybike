@@ -1,5 +1,5 @@
 .mapboxgl-popup-content {
-  padding: 12px;
+  padding: 12px !important;
   line-height: 1.2;
   letter-spacing: .2px;
   font-weight: 500;
