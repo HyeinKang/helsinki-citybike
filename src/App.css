@@ -1,38 +1,36 @@
-.App {
-  text-align: center;
+.mapboxgl-popup-content {
+  padding: 12px;
+  line-height: 1.2;
+  letter-spacing: .2px;
+  font-weight: 500;
+  border-radius: 4px;
+  min-width: 80px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.station-name {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-weight: 400;
+  margin-bottom: 6px;
 }
 
-.App-link {
-  color: #61dafb;
+.indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: red;
+  margin-left: 12px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.indicator.safe {
+  background-color: green;
+}
+
+.indicator.warning {
+  background-color: orange;
+}
+
+.divider {
+  margin: 0 2px;
 }
