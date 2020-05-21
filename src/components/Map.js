@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 
 import { GeolocateControl } from "mapbox-gl";
+import MapboxGLButtonControl from "./MapboxGLButtonControl";
 import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from 'react-mapbox-gl';
 
 const MapboxMap = ReactMapboxGl({
@@ -16,7 +17,7 @@ class Map extends React.Component {
     this.state = {
       center: [24.964421, 60.197636],
       zoom: [15],
-      maxZoom: [18]
+      maxZoom: [17]
     }
   }
 
@@ -27,8 +28,21 @@ class Map extends React.Component {
   }
 
   render() {
-    const { updateBounds, locations } = this.props;
-    const onMapLoad = map => { map.addControl(new GeolocateControl()); };
+    const { updateBounds, getStationInfo, locations } = this.props;
+
+    /* Instantiate new controls with custom event handlers */
+    const refreshCtrl = new MapboxGLButtonControl({
+      className: "mapbox-gl-draw_point",
+      title: "Refresh the station information",
+      eventHandler: getStationInfo(_.map(locations, "stationId"))
+    });
+
+    const onMapLoad = map => {
+      map.addControl(new GeolocateControl(), 'top-left');
+      map.addControl(refreshCtrl, 'top-right');
+      
+      // updateBounds(map.getBounds());
+    };
 
     function StationsInfo({location}) {
       const stationCapability = location.bikesAvailable + location.spacesAvailable;
