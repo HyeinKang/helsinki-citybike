@@ -7,7 +7,11 @@ import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from 'react-mapbox-
 
 const MapboxMap = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoiaGVpbmEta2FuZyIsImEiOiJja2FhNGppb2IwdDNqMnZxd3h1bnFja2NhIn0.si285aYkKGq4jcOjvpryzw',
-  
+});
+
+let userCoordinates = [24.964421, 60.197636];
+navigator.geolocation.getCurrentPosition(position => {
+  userCoordinates = [position.coords.longitude, position.coords.latitude];
 });
 
 class Map extends React.Component {
@@ -15,7 +19,7 @@ class Map extends React.Component {
     super(props);
 
     this.state = {
-      center: [24.964421, 60.197636],
+      center: userCoordinates,
       zoom: [15],
       maxZoom: [17]
     }
@@ -42,9 +46,21 @@ class Map extends React.Component {
                     </svg>`,
         eventHandler: () => {updateBounds(map.getBounds())}
       });
+      const geolocate = new GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true
+        },
+        trackUserLocation: true,
+        showUserLocation: true,
+        trigger: true
+      });
   
-      map.addControl(new GeolocateControl(), 'top-left');
+      map.addControl(geolocate, 'top-left');
       map.addControl(refreshCtrl, 'top-right');
+
+      geolocate.trigger();
+      console.log('geolocate', geolocate);
+      console.log('geolocate', geolocate._geolocateButton);
 
       updateBounds(map.getBounds());
     };
