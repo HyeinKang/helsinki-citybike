@@ -40,3 +40,13 @@
 .divider {
   margin: 0 2px;
 }
+
+.mapboxgl-ctrl-icon {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.mapboxgl-ctrl-icon svg {
+  display: block;
+}
