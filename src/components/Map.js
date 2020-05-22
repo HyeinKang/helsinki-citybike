@@ -82,9 +82,10 @@ class Map extends React.Component {
     return (
       <div>
         <MapboxMap
-            style="mapbox://styles/mapbox/streets-v8"
+            style="mapbox://styles/heina-kang/ckahkdlxb014m1itfktw9kt6s"
             center={this.state.center}
             zoom={this.state.zoom}
+            minZoom={this.state.minZoom}
             maxZoom={this.state.maxZoom}
             containerStyle={{
               width: '100vw',
@@ -92,6 +93,7 @@ class Map extends React.Component {
             }}
             onStyleLoad={onMapLoad}
             onMoveEnd={(map) => {updateBounds(map.getBounds())}}
+            attributionControl={false}
           >
             <Layer type="symbol" id="marker" layout={{ 'icon-image': 'bicycle-15' }}>
               { locations.map((location) => (
