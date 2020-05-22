@@ -19,8 +19,9 @@ class Map extends React.Component {
     super(props);
 
     this.state = {
-      center: userCoordinates,
-      zoom: [15],
+      center: [24.941531, 60.170676],
+      zoom: [16],
+      minZoom: [15],
       maxZoom: [17]
     }
   }
@@ -52,15 +53,14 @@ class Map extends React.Component {
         },
         trackUserLocation: true,
         showUserLocation: true,
-        trigger: true
       });
   
       map.addControl(geolocate, 'top-left');
       map.addControl(refreshCtrl, 'top-right');
 
-      geolocate.trigger();
-      console.log('geolocate', geolocate);
-      console.log('geolocate', geolocate._geolocateButton);
+      setTimeout(()=>{
+        geolocate.trigger();
+      }, 500)
 
       updateBounds(map.getBounds());
     };
