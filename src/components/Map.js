@@ -4,15 +4,13 @@ import _ from 'lodash';
 import { GeolocateControl } from "mapbox-gl";
 import MapboxGLButtonControl from "./MapboxGLButtonControl";
 import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from 'react-mapbox-gl';
+import { isMobile } from "react-device-detect";
 
 const MapboxMap = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoiaGVpbmEta2FuZyIsImEiOiJja2FhNGppb2IwdDNqMnZxd3h1bnFja2NhIn0.si285aYkKGq4jcOjvpryzw',
 });
 
 let userCoordinates = [24.964421, 60.197636];
-navigator.geolocation.getCurrentPosition(position => {
-  userCoordinates = [position.coords.longitude, position.coords.latitude];
-});
 
 class Map extends React.Component {
   constructor(props) {
@@ -55,12 +53,14 @@ class Map extends React.Component {
         showUserLocation: true,
       });
   
-      map.addControl(geolocate, 'top-left');
       map.addControl(refreshCtrl, 'top-right');
 
-      setTimeout(()=>{
-        geolocate.trigger();
-      }, 500)
+      if (isMobile) {
+        map.addControl(geolocate, 'top-left');
+        setTimeout(()=>{
+          geolocate.trigger();
+        }, 500)
+      }
 
       updateBounds(map.getBounds());
     };
