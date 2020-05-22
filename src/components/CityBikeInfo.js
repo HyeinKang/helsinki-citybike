@@ -98,8 +98,10 @@ const CityBikeInfo = () => {
     setBounds(newBounds);
   }
 
+  const height = window.innerHeight;
+
   return (
-    <div>
+    <div style={{'height': height}}>
       <Map locations={stations} isLoading={isLoading} updateBounds={updateBounds} />
     </div>
   );

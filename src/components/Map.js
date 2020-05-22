@@ -72,7 +72,7 @@ class Map extends React.Component {
             maxZoom={this.state.maxZoom}
             containerStyle={{
               width: '100vw',
-              height: '100vh'
+              height: window.innerHeight
             }}
             onStyleLoad={onMapLoad}
             onMoveEnd={(map) => {updateBounds(map.getBounds())}}
