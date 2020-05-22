@@ -49,7 +49,6 @@ class Map extends React.Component {
         positionOptions: {
           enableHighAccuracy: true
         },
-        trackUserLocation: true,
         showUserLocation: true,
       });
   
