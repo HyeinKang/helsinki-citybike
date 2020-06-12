@@ -4,5 +4,5 @@ WORKDIR /usr/src/api
 COPY package.json /usr/src/api/
 RUN npm install
 COPY . /usr/src/api
-EXPOSE 8081
-CMD [ “npm”, “start” ]
+EXPOSE 3000
+CMD [ "npm", "start" ]
