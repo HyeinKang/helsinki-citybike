@@ -7,34 +7,49 @@ services:
     stdin_open: true
     build: .
     ports:
-      - "3000:3000"
+      - "443:3000"
     links:
       - mongo
+    networks:
+      - backend
   mongo:
     container_name: citybike-mongo
     image: mongo
     volumes:
       - data:/data/db
       # - mongo-data:/data/db
-    ports:
-      - "27017:27017"
+    networks:
+      - backend
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+        - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+        - MONGO_INITDB_DATABASE=bikeStations
   mongo-express:
     image: mongo-express
     restart: always
-    ports:
-      - "8081:8081"
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+        - ME_CONFIG_MONGODB_SERVER=mongo
+        - ME_CONFIG_MONGODB_PORT=27017
+        - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+        - ME_CONFIG_MONGODB_AUTH_DATABASE=bikeStations
+        - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USER}
+        - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ROOT_PASSWORD}
+        - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_LOGIN}
+        - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
+    depends_on:
+        - mongo
+    networks:
+      - backend
+    ports:
+      - "8888:8081"
   api:
     container_name: citybike-api
     build: ./api
-    ports:
-      - 8082:8082
     volumes:
       - ./api:/api
+    networks:
+      - backend
 volumes:
   data:
+networks:
+  backend:

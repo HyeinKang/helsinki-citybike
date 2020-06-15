@@ -15,7 +15,7 @@ To display informations of helsinki city bike stations.
 * [ ] Submit sitemap
 * [ ] Change the host to Azure
 
-* [ ] Setup containers with docker-compose: MongoDB, API, Application
+* [x] Setup containers with docker-compose: MongoDB, API, Application
 * [ ] Setup MongoDB
 * [ ] Setup API
 * [ ] Setup a CI/CD pipe
