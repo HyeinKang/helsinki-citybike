@@ -15,22 +15,26 @@ services:
   mongo:
     container_name: citybike-mongo
     image: mongo
+    env_file:
+        - .env
     volumes:
       - data:/data/db
-      - ./data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       # - mongo-data:/data/db
     networks:
       - backend
     environment:
-        - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-        - MONGO_INITDB_DATABASE=bikeStations
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=bikeStations
+    command: mongod
   mongo-express:
     image: mongo-express
     restart: always
+    env_file:
+        - .env
     environment:
         - ME_CONFIG_MONGODB_PORT=27017
-        - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+        # - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
         - ME_CONFIG_MONGODB_AUTH_DATABASE=bikeStations
         - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USER}
         - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ROOT_PASSWORD}
