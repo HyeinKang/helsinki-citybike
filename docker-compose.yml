@@ -29,6 +29,8 @@ services:
   api:
     container_name: citybike-api
     build: ./api
+    ports:
+      - "8081:3000"
     volumes:
       - ./api:/api
     networks:
