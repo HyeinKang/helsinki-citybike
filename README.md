@@ -16,14 +16,14 @@ To display informations of helsinki city bike stations.
 * [ ] Change the host to Azure
 
 * [x] Setup containers with docker-compose: MongoDB, API, Application
-* [ ] Setup MongoDB
-* [ ] Setup API
+* [x] Setup MongoDB
+* [x] Setup API
 * [ ] Setup a CI/CD pipe
 
 * [ ] [Frontend improvement] Redesign popover - Showing the minimum elements when not selected.
 * [ ] [Frontend improvement] Redesign popover - Make it expandable
 * [ ] [Feature implementation] Show directions on how to get to the closest station
-* [ ] [Backend implementation] Setup mongoDB
+* [x] [Backend implementation] Setup mongoDB
 * [ ] [API implementation] updateBikeStations
 * [ ] [API implementation] addBikeTrends
 * [ ] [API implementation] viewBikeTrend
