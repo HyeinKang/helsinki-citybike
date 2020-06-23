@@ -16,7 +16,7 @@ services:
     container_name: citybike-mongo
     image: mongo
     env_file:
-        - .env
+      - .env
     volumes:
       - data:/data/db
     networks:
@@ -29,6 +29,8 @@ services:
   api:
     container_name: citybike-api
     build: ./api
+    env_file:
+      - .env
     ports:
       - "8081:3000"
     volumes:
