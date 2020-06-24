@@ -6,6 +6,8 @@ services:
     restart: always
     stdin_open: true
     build: .
+    volumes:
+      - .:/usr/src/app/
     ports:
       - "443:3000"
     links:
@@ -34,7 +36,7 @@ services:
     ports:
       - "8081:3000"
     volumes:
-      - ./api:/api
+      - ./api:/usr/src/api
     networks:
       - backend
 volumes:
