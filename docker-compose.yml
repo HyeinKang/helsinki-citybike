@@ -23,6 +23,7 @@ services:
       - data:/data/db
     networks:
       - backend
+      - services
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
@@ -39,7 +40,17 @@ services:
       - ./api:/usr/src/api
     networks:
       - backend
+  services:
+    container_name: citybike-services
+    build: ./services
+    env_file:
+      - .env
+    volumes:
+      - ./services:/usr/src/services
+    networks:
+      - services
 volumes:
   data:
 networks:
   backend:
+  services:
