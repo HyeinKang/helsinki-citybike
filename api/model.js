@@ -9,7 +9,4 @@ mongoose.connect(mongoDB, { useNewUrlParser: true })
    .then(() =>  console.log('connection successful'))
    .catch((err) => console.error(err));;
 
-//Get the default connection
-var db = mongoose.connection;
-
-module.exports = db;
+module.exports = mongoose;

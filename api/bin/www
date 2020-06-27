@@ -7,6 +7,11 @@
 var app = require('../app');
 var debug = require('debug')('api:server');
 var http = require('http');
+var apiController = require('../controllers/apiController');
+var Stations = require('../models/stations')
+console.log('Stations: ', Stations);
+
+apiController(app);
 
 /**
  * Get port from environment and store in Express.
