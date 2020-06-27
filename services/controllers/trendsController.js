@@ -1,4 +1,4 @@
-var Stations = require('../models/StationModel');
+var Trends = require('../models/trendModel');
 
 module.exports = function(app) {
 
@@ -8,14 +8,14 @@ module.exports = function(app) {
     
     app.post('/api/todo', function(req, res) {
         if (req.body.id) {
-          Stations.findByIdAndUpdate(req.body.id, { todo: req.body.todo, isDone: req.body.isDone, hasAttachment: req.body.hasAttachment }, function(err, todo) {
+          Trends.findByIdAndUpdate(req.body.id, { todo: req.body.todo, isDone: req.body.isDone, hasAttachment: req.body.hasAttachment }, function(err, todo) {
                 if (err) throw err;
                 
                 res.send('Success');
             });
         }
         else {
-            var newStation = Stations({
+            var newStation = Trends({
                 username: 'test',
                 todo: req.body.todo,
                 isDone: req.body.isDone,

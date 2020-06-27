@@ -2,11 +2,11 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var config = require('./config');
-var stationsController = require('./controllers/stationsController');
+var trendsController = require('./controllers/trendsController');
 
 var port = process.env.PORT || 3000;
 
 mongoose.connect(config.getDbConnectionString());
-stationsController(app);
+trendsController(app);
 
 app.listen(port);

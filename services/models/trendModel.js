@@ -2,12 +2,13 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var stationSchema = new Schema({
+var trendSchema = new Schema({
   stationId: String,
   stationName: String,
   lat: Number,
   lon: Number,
   spacesAvailable: Number,
+  bikesAvailable: Number,
   trends: Array,
   comments: [
     {
@@ -19,6 +20,6 @@ var stationSchema = new Schema({
   date: Date
 });
 
-var Stations = mongoose.model('Stations', stationSchema);
+var Trends = mongoose.model('Trends', trendSchema);
 
-module.exports = Stations;
+module.exports = Trends;
