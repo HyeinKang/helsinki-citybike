@@ -5,9 +5,9 @@ services:
     container_name: citybike-app
     restart: always
     stdin_open: true
-    build: .
+    build: ./app
     volumes:
-      - .:/usr/src/app/
+      - ./app:/usr/src/app/
     ports:
       - "443:3000"
     links:
