@@ -20,16 +20,21 @@ module.exports = function(app) {
       `,
     }).then(res => {
       const data = res.data.bikeRentalStations;
-      var availableBikes = data.reduce((obj, item) => (obj[item.stationId] = item.bikesAvailable, obj) ,{});
+      data.reduce((obj, item) => {
+        
+        var newTimeline = Trends({
+          availableBikes: {
+            bikesAvailable: item.bikesAvailable,
+            dateTime: new Date()
+          },
+          stationId: item.stationId
+        });
+        newTimeline.save(function(err) {
+          if (err) throw err;
+          console.log(item.stationId + ': Success');
+        });
+      });
 
-      var newTimeline = Trends({
-        availableBikes: availableBikes,
-        dateTime: new Date()
-      });
-      newTimeline.save(function(err) {
-        if (err) throw err;
-        console.log('Success');
-      });
     });
   });
 }

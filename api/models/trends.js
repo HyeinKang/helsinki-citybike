@@ -11,9 +11,10 @@ mongoose.connect(mongoDB, { useNewUrlParser: true })
 var Schema = mongoose.Schema;
 
 var trendSchema = new Schema({
-  availableBikes: Object,
-  dateTime: Date
+  stationId: String,
+  availableBikes: Object
 });
+
 
 var Trends = mongoose.model('Trend', trendSchema);
 
