@@ -1,4 +1,5 @@
 const { createApolloFetch } = require('apollo-fetch');
+var moment = require('moment');
 var cron = require('node-cron');
 var Trends = require('../models/trendModel');
 
@@ -23,18 +24,15 @@ module.exports = function(app) {
       data.reduce((obj, item) => {
         
         var newTimeline = Trends({
-          availableBikes: {
-            bikesAvailable: item.bikesAvailable,
-            dateTime: new Date()
-          },
+          bikesAvailable: item.bikesAvailable,
+          dateTime: Date.now(),
           stationId: item.stationId
         });
         newTimeline.save(function(err) {
           if (err) throw err;
-          console.log(item.stationId + ': Success');
         });
       });
-
+      console.log('Available biked imported');
     });
   });
 }

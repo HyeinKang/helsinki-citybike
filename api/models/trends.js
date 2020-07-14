@@ -12,9 +12,9 @@ var Schema = mongoose.Schema;
 
 var trendSchema = new Schema({
   stationId: String,
-  availableBikes: Object
+  bikesAvailable: Number,
+  dateTime: Date
 });
-
 
 var Trends = mongoose.model('Trend', trendSchema);
 
