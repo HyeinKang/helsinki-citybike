@@ -34,8 +34,6 @@ services:
     build: ./api
     env_file:
       - .env
-    ports:
-      - "8081:3000"
     volumes:
       - ./api:/usr/src/api
     networks:
