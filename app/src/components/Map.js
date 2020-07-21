@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import axios from 'axios';
 
 import { GeolocateControl } from "mapbox-gl";
 import MapboxGLButtonControl from "./MapboxGLButtonControl";
@@ -70,6 +71,13 @@ class Map extends React.Component {
 
       const bikePercentage = bikeAvailability / stationCapability * 100;
       const indicator = bikePercentage > 50 ? "safe" : bikePercentage > 0 ? "warning" : "bad";
+
+      axios.get(`/trends/${location.stationId}`)
+      .then(res => {
+        console.log('chekc', res.data);
+        // const persons = res.data;
+        // this.setState({ persons });
+      })
 
       return (
         <Popup coordinates={[location.lon, location.lat]} key={location.stationId} >
