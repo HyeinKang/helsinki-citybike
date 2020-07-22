@@ -1,11 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
-import axios from 'axios';
-
-import { GeolocateControl } from "mapbox-gl";
-import MapboxGLButtonControl from "./MapboxGLButtonControl";
-import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from 'react-mapbox-gl';
 import { isMobile } from "react-device-detect";
+import { GeolocateControl } from "mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from 'react-mapbox-gl';
+import MapboxGLButtonControl from "./MapboxGLButtonControl";
+import StationPopover from "./StationPopover";
 
 const MapboxMap = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoiaGVpbmEta2FuZyIsImEiOiJja2FhNGppb2IwdDNqMnZxd3h1bnFja2NhIn0.si285aYkKGq4jcOjvpryzw',
@@ -72,17 +71,16 @@ class Map extends React.Component {
       const bikePercentage = bikeAvailability / stationCapability * 100;
       const indicator = bikePercentage > 50 ? "safe" : bikePercentage > 0 ? "warning" : "bad";
 
-      axios.get(`/trends/${location.stationId}`)
-      .then(res => {
-        console.log('chekc', res.data);
-        // const persons = res.data;
-        // this.setState({ persons });
-      })
-
       return (
         <Popup coordinates={[location.lon, location.lat]} key={location.stationId} >
-          <div className="station-name"><span>{location.name}</span> <div className={`${indicator}  ${isLoading ? "is-loading" : ""} indicator`}></div></div>
-          <div className={`avilability`}>{bikeAvailability}<span className="divider">/</span>{stationCapability}</div>
+          <StationPopover
+            name={location.name}
+            stationId={location.stationId}
+            indicator={indicator}
+            isLoading={isLoading}
+            bikeAvailability={bikeAvailability}
+            stationCapability={stationCapability}
+          />
         </Popup>
       )
     }
