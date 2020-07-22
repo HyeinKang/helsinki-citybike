@@ -1,5 +1,5 @@
 .mapboxgl-popup-content {
-  padding: 12px !important;
+  padding: 0 !important;
   line-height: 1.2;
   letter-spacing: .2px;
   font-weight: 500;
@@ -11,8 +11,39 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 12px 12px 0 !important;
   font-weight: 400;
   margin-bottom: 6px;
+}
+
+.station-availity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px 12px !important;
+}
+
+.station-availity svg {
+  display: block;
+  width: 18px;
+  transform: rotate(0deg);
+  transition: transform ease-in-out .2s;
+}
+
+.is-open .station-availity svg {
+  transform: rotate(-180deg);
+}
+
+.station-more {
+  height: 0;
+  overflow: hidden;
+  transition: height ease-in-out .2s;
+}
+
+.is-open .station-more {
+  height: 80px;
+  padding: 12px 12px !important;
+  border-top: 1px solid #eee;
 }
 
 .indicator {
