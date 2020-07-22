@@ -23,27 +23,19 @@
   padding: 0 12px 12px !important;
 }
 
-.station-availity svg {
+.station-availity .more-info svg {
   display: block;
-  width: 18px;
-  transform: rotate(0deg);
+  width: 14px;
+}
+
+.station-availity .more-info {
+  transform: translateX(0px);
   transition: transform ease-in-out .2s;
+  cursor: pointer;
 }
 
-.is-open .station-availity svg {
-  transform: rotate(-180deg);
-}
-
-.station-more {
-  height: 0;
-  overflow: hidden;
-  transition: height ease-in-out .2s;
-}
-
-.is-open .station-more {
-  height: 80px;
-  padding: 12px 12px !important;
-  border-top: 1px solid #eee;
+.station-availity .more-info:hover {
+  transform: translateX(2px);
 }
 
 .indicator {
@@ -52,6 +44,7 @@
   border-radius: 9999px;
   background-color: red;
   margin-left: 12px;
+  margin-right: 4px;
   opacity: 1;
   transition: opacity .2s;
 }
