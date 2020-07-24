@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost';
 import _ from 'lodash';
 
 import Map from './Map';
+import StationPopup from './StationPopup';
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
@@ -17,6 +18,7 @@ const CityBikeInfo = () => {
   const [stations, setStations] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedStation, setSelectedStation] = useState(null);
   const client = useApolloClient();
 
   const GET_ALL_STATIONS = gql`
@@ -50,16 +52,16 @@ const CityBikeInfo = () => {
     const southMost = bounds._sw.lng;
     const westMost = bounds._sw.lat;
 
-    let selectedStations = [];
+    let visibleStations = [];
     !!allStations && allStations.forEach((station) => {
       const lonInsideBound = northMost >= station.lon && station.lon >= southMost;
       const latInsideBound = eastMost >= station.lat && station.lat >= westMost;
       if(lonInsideBound && latInsideBound) {
-        selectedStations = [...selectedStations, station]
+        visibleStations = [...visibleStations, station]
       }
     });
 
-    const stationIds = _.map(selectedStations, 'stationId');
+    const stationIds = _.map(visibleStations, 'stationId');
     getStationInfo(stationIds);
   }
 
@@ -98,11 +100,16 @@ const CityBikeInfo = () => {
     setBounds(newBounds);
   }
 
+  const updateSelectedStation = (newStation, oldStation) => {
+    setSelectedStation(newStation);
+  }
+
   const height = window.innerHeight;
 
   return (
     <div style={{'height': height}}>
-      <Map locations={stations} isLoading={isLoading} updateBounds={updateBounds} />
+      { !!selectedStation && (<StationPopup updateSelectedStation={updateSelectedStation} />) }
+      <Map locations={stations} isLoading={isLoading} updateBounds={updateBounds} updateSelectedStation={updateSelectedStation} />
     </div>
   );
 }

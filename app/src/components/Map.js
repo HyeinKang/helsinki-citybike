@@ -32,7 +32,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const { updateBounds, locations, isLoading } = this.props;
+    const { updateBounds, locations, isLoading, updateSelectedStation } = this.props;
 
     const onMapLoad = map => {
       /* Instantiate new controls with custom event handlers */
@@ -80,6 +80,7 @@ class Map extends React.Component {
             isLoading={isLoading}
             bikeAvailability={bikeAvailability}
             stationCapability={stationCapability}
+            updateSelectedStation={updateSelectedStation}
           />
         </Popup>
       )
