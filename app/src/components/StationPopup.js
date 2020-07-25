@@ -37,12 +37,26 @@ class StationPopup extends React.Component {
       that.setState({'bikeTrends': res.data}); // [{averageBikesAvailable: 1, time:0}]
     })
 
+    const chartBgColors = () => {
+      const baseColor = 'rgba(242, 188, 25, 0.2)';
+      const highlightColor = 'rgba(242, 188, 25, 0.6)';
+      const currentHour = moment().tz("Europe/Helsinki").hour();
+
+      let colorsArray = [];
+      for (var i = 0; i <= 23; i++) {
+        colorsArray.push(baseColor);
+      }
+      colorsArray[currentHour] = highlightColor;
+
+      return colorsArray;
+    }
+
     const data = {
       labels: _.map(this.state.bikeTrends, 'time'),
       datasets: [
         {
           label: 'Available bikes',
-          backgroundColor: 'rgba(242, 188, 25, 0.2)',
+          backgroundColor: chartBgColors,
           borderWidth: 0,
           barThickness: 'flex',
           barPercentage: 1,
