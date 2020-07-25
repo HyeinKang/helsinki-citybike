@@ -108,7 +108,7 @@ const CityBikeInfo = () => {
 
   return (
     <div style={{'height': height}}>
-      { !!selectedStation && (<StationPopup updateSelectedStation={updateSelectedStation} />) }
+      { !!selectedStation && (<StationPopup updateSelectedStation={updateSelectedStation} selectedStation={selectedStation} />) }
       <Map locations={stations} isLoading={isLoading} updateBounds={updateBounds} updateSelectedStation={updateSelectedStation} />
     </div>
   );

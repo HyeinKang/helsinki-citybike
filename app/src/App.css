@@ -1,3 +1,19 @@
+h2 {
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+h3 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+p {
+  font-size: 14px;
+  margin: 0;
+}
+
 .mapboxgl-popup-content {
   padding: 0 !important;
   line-height: 1.2;
@@ -122,10 +138,10 @@
   right: 0;
   bottom: 0;
   min-width: 320px;
-  max-width: 560px;
+  max-width: 360px;
   width: 100%;
-  min-height: 400px;
-  max-height: 80vh;
+  min-height: 320px;
+  max-height: 500px;
   height: 100%;
   margin: auto;
   background-color: #fff;
@@ -153,4 +169,37 @@
   height: 100%;
   background-color: rgba(0,0,0,0.2);
   z-index: -1;
+}
+
+.trend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.trend-header h3 {
+  margin: 0;
+}
+
+.trend-chart {
+  height: 360px;
+  overflow-y: scroll;
+}
+
+.selected-day {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80px;
+  font-size: 14px;
+}
+
+.selected-day .button {
+  cursor: pointer;
+}
+
+.selected-day svg {
+  display: block;
+  width: 20px;
 }

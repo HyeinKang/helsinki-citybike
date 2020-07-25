@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import axios from 'axios';
+import moment from 'moment-timezone';
+import {HorizontalBar} from 'react-chartjs-2';
 
 class StationPopup extends React.Component {
   constructor(props) {
@@ -8,22 +10,14 @@ class StationPopup extends React.Component {
 
     this.state = {
       bikeTrends: [],
-      isMounted: false
+      dayNumber: moment().tz("Europe/Helsinki").day()
     }
-  }
-
-  componentDidMount() {
-    this.state.isMounted = true;
-  }
-
-  componentWillUnmount() {
-    this.state.isMounted = false;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const bikeTrendsUpdated = !_.isEqual(this.state.bikeTrends, nextState.bikeTrends)
-    const isOpenUpdated = !_.isEqual(this.state.isOpen, nextState.isOpen)
-    return bikeTrendsUpdated || isOpenUpdated;
+    const dayNumberUpdated = !_.isEqual(this.state.dayNumber, nextState.dayNumber)
+    return bikeTrendsUpdated || dayNumberUpdated;
   }
 
   toggleOpenState = () => {
@@ -35,19 +29,104 @@ class StationPopup extends React.Component {
   }
 
   render() {
+    const { stationId, stationName, stationCapability, bikeAvailability } = this.props.selectedStation;
     const that = this;
-    axios.get(`/trends/${this.props.stationId}`)
+
+    axios.get(`/trends/${stationId}/${this.state.dayNumber}`)
     .then(res => {
-      if (this.state.isMounted) {
-        that.setState({'bikeTrends': res.data}); // [{averageBikesAvailable: 1, time:0}]
-      }
+      that.setState({'bikeTrends': res.data}); // [{averageBikesAvailable: 1, time:0}]
     })
+
+    const data = {
+      labels: _.map(this.state.bikeTrends, 'time'),
+      datasets: [
+        {
+          label: 'Available bikes',
+          backgroundColor: 'rgba(242, 188, 25, 0.2)',
+          borderWidth: 0,
+          barThickness: 'flex',
+          barPercentage: 1,
+          categoryPercentage: 1,
+          hoverBackgroundColor: 'rgba(242, 188, 25, 0.4)',
+          data: _.map(this.state.bikeTrends, 'averageBikesAvailable')
+        }
+      ]
+    };
+
+    const chartOptions = {
+      responsive: true,
+      layout: {
+          padding: {
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0
+          }
+      },
+      scales: {
+        xAxes: [{
+          gridLines: {
+            // display: false,
+            // drawBorder: false,
+            drawOnChartArea: false
+          },
+        }],
+        yAxes: [{
+          gridLines: {
+            // display: false,
+            // drawBorder: false,
+            drawOnChartArea: false
+          },
+        }],
+      }
+    }
+
+    const daySwitcher = () => {
+      const daysOfTheWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      const decreaseDayNumber = () => {
+        if (this.state.dayNumber == 0) {
+          that.setState({dayNumber: 6});
+        } else {
+          that.setState({dayNumber: this.state.dayNumber - 1});
+        }
+      }
+
+      const increaseDayNumber = () => {
+        if (this.state.dayNumber == 6) {
+          that.setState({dayNumber: 0});
+        } else {
+          that.setState({dayNumber: this.state.dayNumber + 1});
+        }
+      }
+
+      return (
+        <div className="selected-day">
+          <div className="button" onClick={decreaseDayNumber}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
+            </svg>
+          </div>
+          <div>{daysOfTheWeek[this.state.dayNumber]}</div>
+          <div className="button" onClick={increaseDayNumber}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+            </svg>
+          </div>
+        </div>
+      )
+    }
 
     return (
       <div className="station-info-popup">
         <div className="station-info-content">
           <div className="station-info-content__header">
-            <h2>Name</h2>
+            <div>
+              <h2>{stationName}</h2>
+              {/* <p>N meters away</p> */}
+            </div>
             <div className="close" onClick={this.updateSelectedStation}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                 <path d="M0 0h24v24H0z" fill="none" />
@@ -55,12 +134,24 @@ class StationPopup extends React.Component {
               </svg>
             </div>
           </div>
-          <h3>Availibity / Capacity</h3>
-          <h3>Distance</h3>
-          <h3>Bike trneds with current date/time, highlighted current time in the graph</h3>
           <div>
-            Button to direct (Future feature)
+            <h3>Bikes available now</h3>
+            <p>{bikeAvailability} / {stationCapability}</p>
           </div>
+          <div>
+            <div className="trend-header">
+              <h3>Availability Trend</h3>
+              {daySwitcher()}
+            </div>
+            <div className="trend-chart">
+              <HorizontalBar data={data} height={480} options={chartOptions} />
+            </div>
+          </div>
+          {/* <div>
+            <div>
+              Button to direct (Future feature)
+            </div>
+          </div> */}
         </div>
         <div className="station-info-bg"></div>
       </div>
