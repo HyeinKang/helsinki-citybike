@@ -7,8 +7,8 @@ module.exports = function(app) {
     uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
   });
 
-  cron.schedule('* * * * *', () => {
-    console.log('running a task every minute');
+  cron.schedule('*/10 * * * *', () => {
+    console.log('running a task every 10 mins');
     
     fetch({
       query: `query getAllStations {

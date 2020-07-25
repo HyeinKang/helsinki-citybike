@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { isMobile } from "react-device-detect";
 import { GeolocateControl } from "mapbox-gl";
 import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from 'react-mapbox-gl';
+
 import MapboxGLButtonControl from "./MapboxGLButtonControl";
 import StationPopover from "./StationPopover";
 
