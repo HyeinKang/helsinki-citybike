@@ -83,6 +83,8 @@ class StationPopup extends React.Component {
           ticks: {
             beginAtZero: true,
             stepSize: 5,
+            suggestedMin: 5,
+            suggestedMax: 10
           }
         }],
         yAxes: [{
