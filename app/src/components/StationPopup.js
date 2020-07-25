@@ -79,11 +79,11 @@ class StationPopup extends React.Component {
       },
       scales: {
         xAxes: [{
-          gridLines: {
-            // display: false,
-            // drawBorder: false,
-            drawOnChartArea: false
-          },
+          position: 'top',
+          ticks: {
+            beginAtZero: true,
+            stepSize: 5,
+          }
         }],
         yAxes: [{
           gridLines: {
