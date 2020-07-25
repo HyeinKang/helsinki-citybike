@@ -1,5 +1,4 @@
 const { createApolloFetch } = require('apollo-fetch');
-var moment = require('moment');
 var cron = require('node-cron');
 var Trends = require('../models/trendModel');
 
@@ -8,8 +7,8 @@ module.exports = function(app) {
     uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
   });
 
-  cron.schedule('*/10 * * * *', () => {
-    console.log('running a task every 10 mins');
+  cron.schedule('* * * * *', () => {
+    console.log('running a task every minute');
     
     fetch({
       query: `query getAllStations {
