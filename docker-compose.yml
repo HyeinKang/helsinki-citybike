@@ -6,6 +6,7 @@ services:
     restart: always
     stdin_open: true
     build: ./app
+    image: hyeink/helsinkicitybike_app
     volumes:
       - ./app:/usr/src/app
     ports:
@@ -32,6 +33,7 @@ services:
   api:
     container_name: citybike-api
     build: ./api
+    image: hyeink/helsinkicitybike_api
     env_file:
       - .env
     volumes:
@@ -41,6 +43,7 @@ services:
   services:
     container_name: citybike-services
     build: ./services
+    image: hyeink/helsinkicitybike_services
     env_file:
       - .env
     volumes:
