@@ -26,6 +26,10 @@ steps:
     azureContainerRegistry: '{"loginServer":"helsinkicitybikeacr.azurecr.io", "id" : "/subscriptions/c1347830-c5cc-4bf9-b998-832739052fca/resourceGroups/helsinki-citybike-rg/providers/Microsoft.ContainerRegistry/registries/helsinkicitybikeacr"}'
     dockerComposeFile: 'docker-compose.yml'
     action: 'Push services'
+- task: CopyFiles@2
+  inputs:
+    Contents: '**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
