@@ -8,7 +8,7 @@ services:
     build: ./app
     image: hyeink/helsinkicitybike_app
     volumes:
-      - ./app:/usr/src/app
+      - ${WEBAPP_STORAGE_HOME}/app:/usr/src/app
     ports:
       - "443:3000"
     links:
@@ -21,7 +21,7 @@ services:
     env_file:
       - .env
     volumes:
-      - data:/data/db
+      - ${WEBAPP_STORAGE_HOME}/data:/data/db
     networks:
       - backend
       - services
@@ -37,7 +37,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./api:/usr/src/api
+      - ${WEBAPP_STORAGE_HOME}/api:/usr/src/api
     networks:
       - backend
   services:
@@ -47,7 +47,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./services:/usr/src/services
+      - ${WEBAPP_STORAGE_HOME}/services:/usr/src/services
     networks:
       - services
 volumes:
