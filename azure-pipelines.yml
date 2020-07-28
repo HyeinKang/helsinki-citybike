@@ -12,8 +12,22 @@ pool:
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Hyein(c1347830-c5cc-4bf9-b998-832739052fca)'
+    azureContainerRegistry: '{"loginServer":"helsinkicitybikeacr.azurecr.io", "id" : "/subscriptions/c1347830-c5cc-4bf9-b998-832739052fca/resourceGroups/helsinki-citybike-rg/providers/Microsoft.ContainerRegistry/registries/helsinkicitybikeacr"}'
+    dockerComposeFile: 'docker-compose.yml'
+    action: 'Build services'
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Hyein(c1347830-c5cc-4bf9-b998-832739052fca)'
+    azureContainerRegistry: '{"loginServer":"helsinkicitybikeacr.azurecr.io", "id" : "/subscriptions/c1347830-c5cc-4bf9-b998-832739052fca/resourceGroups/helsinki-citybike-rg/providers/Microsoft.ContainerRegistry/registries/helsinkicitybikeacr"}'
+    dockerComposeFile: 'docker-compose.yml'
+    action: 'Push services'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
