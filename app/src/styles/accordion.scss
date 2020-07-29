@@ -14,6 +14,8 @@
     }
     svg {
       display: block;
+      transform: rotate(0deg);
+      transition: transform .2s ease-in-out;
     }
   }
   &__body {
@@ -22,6 +24,11 @@
     transition: height .2s ease-in-out;
   }
   &.is-open {
+    .accordion__header {
+      svg {
+        transform: rotate(-180deg);
+      }
+    }
     .accordion__body {
       height: auto;
       padding: 8px 0;
@@ -36,7 +43,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  li {
+  &__item {
     padding: 12px 4px;
   }
 }

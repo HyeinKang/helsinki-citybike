@@ -10,6 +10,7 @@ class StationPopup extends React.Component {
     super(props);
 
     this.state = {
+      averageBikesToday: "...",
       bikeTrends: [],
       dayNumber: moment().tz("Europe/Helsinki").day()
     }
@@ -18,7 +19,8 @@ class StationPopup extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     const bikeTrendsUpdated = !_.isEqual(this.state.bikeTrends, nextState.bikeTrends)
     const dayNumberUpdated = !_.isEqual(this.state.dayNumber, nextState.dayNumber)
-    return bikeTrendsUpdated || dayNumberUpdated;
+    const averageBikesTodayUpdated = !_.isEqual(this.state.averageBikesToday, nextState.averageBikesToday)
+    return bikeTrendsUpdated || dayNumberUpdated || averageBikesTodayUpdated;
   }
 
   toggleOpenState = () => {
@@ -36,6 +38,9 @@ class StationPopup extends React.Component {
     axios.get(`/trends/${stationId}/${this.state.dayNumber}`)
     .then(res => {
       that.setState({'bikeTrends': res.data}); // [{averageBikesAvailable: 1, time:0}]
+      if(that.state.averageBikesToday === "...") {
+        that.setState({'averageBikesToday': _.map(res.data, 'averageBikesAvailable')[moment().tz("Europe/Helsinki").hour()]});
+      }
     })
 
     const chartBgColors = () => {
@@ -153,10 +158,10 @@ class StationPopup extends React.Component {
           </div>
           <div className="station-info-content__content">
             <ul className="accordion-list">
-              <li>
+              <li className="accordion-list__item">
                 <Accordion
-                  heading={`Staion bike capacity: ${bikeAvailability} / ${stationCapability}`}
-                  disclaimer={`${this.state.bikeTrends.length > 0 ? _.map(this.state.bikeTrends, 'averageBikesAvailable')[moment().tz("Europe/Helsinki").hour()] : 0} bikes are usually available.`}
+                  heading={`Station bike capacity: ${bikeAvailability} / ${stationCapability}`}
+                  disclaimer={`${this.state.averageBikesToday} bikes are usually available at ${moment().tz("Europe/Helsinki").format('h a, dddd')}s`}
                 >
                   <div className="trend-header">
                     <h3>Availability Trend</h3>
@@ -169,24 +174,30 @@ class StationPopup extends React.Component {
               </li>
               <li>
                 <Accordion
-                  heading="2 comments about this station"
+                  heading="There are 2 comments about this station"
                   disclaimer="Only comments published within 24 hours will be displayed"
                 >
                   <div className="comment-wall">
-                    <ul>
-                      <li>
-                        <div>Some name<span>16h ago</span></div>
-                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur finibus laoreet elit at tempus. Fusce at fermentum massa. Nullam elementum sit amet nisl sed sodales. Pellentesque aliquet et urna quis maximus. Vestibulum quis purus metus. Etiam nisl enim, consequat in neque ut, facilisis tincidunt erat. Nam varius, felis ac congue venenatis, nisl ex consequat arcu, eu aliquet felis lacus a dui.</div>
+                    <h3 className="header">Comments</h3>
+                    <ul className="comments">
+                      <li className="comment">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div className="comment__publisher">Some name, <span>16h ago</span></div>
                       </li>
-                      <li>
-                        <div>Some name<span>10h ago</span></div>
-                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur finibus laoreet elit at tempus. Fusce at fermentum massa. Nullam elementum sit amet nisl sed sodales. Pellentesque aliquet et urna quis maximus. Vestibulum quis purus metus. Etiam nisl enim, consequat in neque ut, facilisis tincidunt erat. Nam varius, felis ac congue venenatis, nisl ex consequat arcu, eu aliquet felis lacus a dui.</div>
+                      <li className="comment">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada neque sed eros pretium vehicula. Proin nec dictum dui. Nunc est orci, accumsan at semper et, iaculis dapibus est. Vestibulum vulputate leo vitae lectus scelerisque, at viverra fusce.</p>
+                        <div className="comment__publisher">Some name, <span>10h ago</span></div>
                       </li>
                     </ul>
                   </div>
-                  <div>
-                    <input type="textarea" />
-                    <button>Add commnet</button>
+                  <div className="comment-input">
+                    <input type="text" maxLength="255" />
+                    <button>
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                      </svg>
+                    </button>
                   </div>
                 </Accordion>
               </li>
@@ -198,7 +209,7 @@ class StationPopup extends React.Component {
               </div>
             </div> */}
         </div>
-        <div className="station-info-bg"></div>
+        <div className="station-info-bg" onClick={this.updateSelectedStation}></div>
       </div>
     );
   }
