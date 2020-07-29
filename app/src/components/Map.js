@@ -11,8 +11,6 @@ const MapboxMap = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoiaGVpbmEta2FuZyIsImEiOiJja2FhNGppb2IwdDNqMnZxd3h1bnFja2NhIn0.si285aYkKGq4jcOjvpryzw',
 });
 
-let userCoordinates = [24.964421, 60.197636];
-
 class Map extends React.Component {
   constructor(props) {
     super(props);

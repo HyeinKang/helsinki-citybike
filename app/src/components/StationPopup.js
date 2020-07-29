@@ -101,7 +101,7 @@ class StationPopup extends React.Component {
       const daysOfTheWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
       const decreaseDayNumber = () => {
-        if (this.state.dayNumber == 0) {
+        if (this.state.dayNumber === 0) {
           that.setState({dayNumber: 6});
         } else {
           that.setState({dayNumber: this.state.dayNumber - 1});
@@ -109,7 +109,7 @@ class StationPopup extends React.Component {
       }
 
       const increaseDayNumber = () => {
-        if (this.state.dayNumber == 6) {
+        if (this.state.dayNumber === 6) {
           that.setState({dayNumber: 0});
         } else {
           that.setState({dayNumber: this.state.dayNumber + 1});

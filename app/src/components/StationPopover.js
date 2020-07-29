@@ -1,6 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
-import { printIntrospectionSchema } from 'graphql';
 
 const StationPopover = (props) => {
   const updateSelectedStation = () => {
