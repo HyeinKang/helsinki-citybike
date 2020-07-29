@@ -1,0 +1,51 @@
+.station-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 12px 0 !important;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.station-availity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px 12px !important;
+  .more-info {
+    transform: translateX(0px);
+    transition: transform ease-in-out .2s;
+    cursor: pointer;
+    svg {
+      display: block;
+      width: 14px;
+    }
+    &:hover {
+      transform: translateX(2px);
+    }
+  }
+}
+
+.indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: red;
+  margin-left: 12px;
+  margin-right: 4px;
+  opacity: 1;
+  transition: opacity .2s;
+  &.safe {
+    background-color: green;
+  }
+  &.warning {
+    background-color: orange;
+  }
+  &.is-loading {
+    opacity: 0;
+  }
+}
+
+.divider {
+  margin: 0 2px;
+}

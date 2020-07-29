@@ -2,7 +2,7 @@ import React from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 
-import './App.css';
+import './App.scss';
 import CityBikeInfo from './components/CityBikeInfo';
 
 const client = new ApolloClient({
