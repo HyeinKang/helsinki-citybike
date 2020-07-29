@@ -4,7 +4,7 @@ To display informations of helsinki city bike stations.
 
 ## Feature Roadmap
 
-* [ ] Display stations bike availability trend
+* [x] Display stations bike availability trend
 * [ ] Show the direction to the nearest or selected bike station
 * [ ] Comments section for people to leave comments about the station
 
@@ -18,15 +18,15 @@ To display informations of helsinki city bike stations.
 * [x] Setup containers with docker-compose: MongoDB, API, Application
 * [x] Setup MongoDB
 * [x] Setup API
-* [ ] Setup a CI/CD pipe
+* [x] Setup a CI/CD pipe
 
-* [ ] [Frontend improvement] Redesign popover - Showing the minimum elements when not selected.
-* [ ] [Frontend improvement] Redesign popover - Make it expandable
+* [x] [Frontend improvement] Redesign popover - Showing the minimum elements when not selected.
+* [x] [Frontend improvement] Redesign popover - Make it expandable
 * [ ] [Feature implementation] Show directions on how to get to the closest station
 * [x] [Backend implementation] Setup mongoDB
-* [ ] [API implementation] updateBikeStations
-* [ ] [API implementation] addBikeTrends
-* [ ] [API implementation] viewBikeTrend
+* [x] [API implementation] updateBikeStations
+* [x] [API implementation] addBikeTrends
+* [x] [API implementation] viewBikeTrend
 * [ ] [API implementation] addComment
 * [ ] [API implementation] deleteComment
 * [ ] [API implementation] viewAllComments
