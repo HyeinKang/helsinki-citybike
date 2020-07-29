@@ -13,6 +13,8 @@
   left: 0;
   right: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
   min-width: 320px;
   max-width: 360px;
   width: 100%;
@@ -24,14 +26,20 @@
   padding: 20px;
   border-radius: 4px;
   border: 1px solid #aaa;
+  overflow-y: scroll;
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 12px 4px;
     svg {
       display: block;
       cursor: pointer;
     }
+  }
+  &__content {
+    border-top: 1px solid #aaa;
+    padding-top: 12px;
   }
 }
 
@@ -53,11 +61,6 @@
   h3 {
     margin: 0;
   }
-}
-
-.trend-chart {
-  height: 360px;
-  overflow-y: scroll;
 }
 
 .selected-day {
