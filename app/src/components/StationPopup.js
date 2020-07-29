@@ -191,23 +191,23 @@ class StationPopup extends React.Component {
                     </ul>
                   </div>
                   <div className="comment-input">
-                    <input type="text" maxLength="255" />
+                    <input type="text" maxLength="255" placeholder="Add comment..." />
                     <button>
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                      </svg>
+                      <div className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
+                      </div>
                     </button>
                   </div>
                 </Accordion>
               </li>
             </ul>
           </div>
-            {/* <div>
-              <div>
-                Button to direct (Future feature)
-              </div>
-            </div> */}
+          <div className="get-direction">
+            <button>Get direction</button>
+          </div>
         </div>
         <div className="station-info-bg" onClick={this.updateSelectedStation}></div>
       </div>
