@@ -3,6 +3,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import {HorizontalBar} from 'react-chartjs-2';
+import Accordion from './Accordion';
 
 class StationPopup extends React.Component {
   constructor(props) {
@@ -150,24 +151,52 @@ class StationPopup extends React.Component {
               </svg>
             </div>
           </div>
-          <div>
-            <h3>Bikes available now</h3>
-            <p>{bikeAvailability} / {stationCapability}</p>
+          <div className="station-info-content__content">
+            <ul className="accordion-list">
+              <li>
+                <Accordion
+                  heading={`Staion bike capacity: ${bikeAvailability} / ${stationCapability}`}
+                  disclaimer={`${this.state.bikeTrends.length > 0 ? _.map(this.state.bikeTrends, 'averageBikesAvailable')[moment().tz("Europe/Helsinki").hour()] : 0} bikes are usually available.`}
+                >
+                  <div className="trend-header">
+                    <h3>Availability Trend</h3>
+                    {daySwitcher()}
+                  </div>
+                  <div className="trend-chart">
+                    <HorizontalBar data={data} height={400} options={chartOptions} />
+                  </div>
+                </Accordion>
+              </li>
+              <li>
+                <Accordion
+                  heading="2 comments about this station"
+                  disclaimer="Only comments published within 24 hours will be displayed"
+                >
+                  <div className="comment-wall">
+                    <ul>
+                      <li>
+                        <div>Some name<span>16h ago</span></div>
+                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur finibus laoreet elit at tempus. Fusce at fermentum massa. Nullam elementum sit amet nisl sed sodales. Pellentesque aliquet et urna quis maximus. Vestibulum quis purus metus. Etiam nisl enim, consequat in neque ut, facilisis tincidunt erat. Nam varius, felis ac congue venenatis, nisl ex consequat arcu, eu aliquet felis lacus a dui.</div>
+                      </li>
+                      <li>
+                        <div>Some name<span>10h ago</span></div>
+                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur finibus laoreet elit at tempus. Fusce at fermentum massa. Nullam elementum sit amet nisl sed sodales. Pellentesque aliquet et urna quis maximus. Vestibulum quis purus metus. Etiam nisl enim, consequat in neque ut, facilisis tincidunt erat. Nam varius, felis ac congue venenatis, nisl ex consequat arcu, eu aliquet felis lacus a dui.</div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <input type="textarea" />
+                    <button>Add commnet</button>
+                  </div>
+                </Accordion>
+              </li>
+            </ul>
           </div>
-          <div>
-            <div className="trend-header">
-              <h3>Availability Trend</h3>
-              {daySwitcher()}
-            </div>
-            <div className="trend-chart">
-              <HorizontalBar data={data} height={480} options={chartOptions} />
-            </div>
-          </div>
-          {/* <div>
-            <div>
-              Button to direct (Future feature)
-            </div>
-          </div> */}
+            {/* <div>
+              <div>
+                Button to direct (Future feature)
+              </div>
+            </div> */}
         </div>
         <div className="station-info-bg"></div>
       </div>
