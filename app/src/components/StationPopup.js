@@ -3,12 +3,14 @@ import _ from 'lodash';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import {HorizontalBar} from 'react-chartjs-2';
+import Accordion from './Accordion';
 
 class StationPopup extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      averageBikesToday: "...",
       bikeTrends: [],
       dayNumber: moment().tz("Europe/Helsinki").day()
     }
@@ -17,7 +19,8 @@ class StationPopup extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     const bikeTrendsUpdated = !_.isEqual(this.state.bikeTrends, nextState.bikeTrends)
     const dayNumberUpdated = !_.isEqual(this.state.dayNumber, nextState.dayNumber)
-    return bikeTrendsUpdated || dayNumberUpdated;
+    const averageBikesTodayUpdated = !_.isEqual(this.state.averageBikesToday, nextState.averageBikesToday)
+    return bikeTrendsUpdated || dayNumberUpdated || averageBikesTodayUpdated;
   }
 
   toggleOpenState = () => {
@@ -35,6 +38,9 @@ class StationPopup extends React.Component {
     axios.get(`/trends/${stationId}/${this.state.dayNumber}`)
     .then(res => {
       that.setState({'bikeTrends': res.data}); // [{averageBikesAvailable: 1, time:0}]
+      if(that.state.averageBikesToday === "...") {
+        that.setState({'averageBikesToday': _.map(res.data, 'averageBikesAvailable')[moment().tz("Europe/Helsinki").hour()]});
+      }
     })
 
     const chartBgColors = () => {
@@ -150,26 +156,60 @@ class StationPopup extends React.Component {
               </svg>
             </div>
           </div>
-          <div>
-            <h3>Bikes available now</h3>
-            <p>{bikeAvailability} / {stationCapability}</p>
+          <div className="station-info-content__content">
+            <ul className="accordion-list">
+              <li className="accordion-list__item">
+                <Accordion
+                  heading={`Station bike capacity: ${bikeAvailability} / ${stationCapability}`}
+                  disclaimer={`${this.state.averageBikesToday} bikes are usually available at ${moment().tz("Europe/Helsinki").format('h a, dddd')}s`}
+                >
+                  <div className="trend-header">
+                    <h3>Availability Trend</h3>
+                    {daySwitcher()}
+                  </div>
+                  <div className="trend-chart">
+                    <HorizontalBar data={data} height={400} options={chartOptions} />
+                  </div>
+                </Accordion>
+              </li>
+              <li>
+                <Accordion
+                  heading="There are 2 comments about this station"
+                  disclaimer="Only comments published within 24 hours will be displayed"
+                >
+                  <div className="comment-wall">
+                    <h3 className="header">Comments</h3>
+                    <ul className="comments">
+                      <li className="comment">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div className="comment__publisher">Some name, <span>16h ago</span></div>
+                      </li>
+                      <li className="comment">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada neque sed eros pretium vehicula. Proin nec dictum dui. Nunc est orci, accumsan at semper et, iaculis dapibus est. Vestibulum vulputate leo vitae lectus scelerisque, at viverra fusce.</p>
+                        <div className="comment__publisher">Some name, <span>10h ago</span></div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="comment-input">
+                    <input type="text" maxLength="255" placeholder="Add comment..." />
+                    <button>
+                      <div className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                </Accordion>
+              </li>
+            </ul>
           </div>
-          <div>
-            <div className="trend-header">
-              <h3>Availability Trend</h3>
-              {daySwitcher()}
-            </div>
-            <div className="trend-chart">
-              <HorizontalBar data={data} height={480} options={chartOptions} />
-            </div>
+          <div className="get-direction">
+            <button>Get direction</button>
           </div>
-          {/* <div>
-            <div>
-              Button to direct (Future feature)
-            </div>
-          </div> */}
         </div>
-        <div className="station-info-bg"></div>
+        <div className="station-info-bg" onClick={this.updateSelectedStation}></div>
       </div>
     );
   }

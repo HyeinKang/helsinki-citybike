@@ -1,0 +1,49 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    h3 {
+      margin-bottom: 2px;
+    }
+    .disclaimer {
+      color: #747474;
+    }
+    svg {
+      display: block;
+      transform: rotate(0deg);
+      transition: transform .2s ease-in-out;
+    }
+  }
+  &__body {
+    height: 0;
+    overflow: hidden;
+    transition: height .2s ease-in-out;
+  }
+  &.is-open {
+    .accordion__header {
+      svg {
+        transform: rotate(-180deg);
+      }
+    }
+    .accordion__body {
+      height: auto;
+      padding: 8px 0;
+    }
+  }
+}
+
+.accordion-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  &__item {
+    padding: 12px 4px;
+  }
+}
