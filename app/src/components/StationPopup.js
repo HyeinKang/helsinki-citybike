@@ -31,6 +31,16 @@ class StationPopup extends React.Component {
     this.props.updateSelectedStation();
   }
 
+  singularOrPlural = (amount, singular, plural) => {
+    let word = singular;
+
+    if(amount > 1) {
+      word = plural;
+    }
+
+    return word;
+  }
+
   render() {
     const { stationId, stationName, stationCapability, bikeAvailability } = this.props.selectedStation;
     const that = this;
@@ -161,7 +171,7 @@ class StationPopup extends React.Component {
               <li className="accordion-list__item">
                 <Accordion
                   heading={`Station bike capacity: ${bikeAvailability} / ${stationCapability}`}
-                  disclaimer={`${this.state.averageBikesToday} bikes are usually available at ${moment().tz("Europe/Helsinki").format('h a, dddd')}s`}
+                  disclaimer={`${this.state.averageBikesToday} ${this.singularOrPlural(this.state.averageBikesToday, 'bike is', 'bikes are')} usually available at ${moment().tz("Europe/Helsinki").format('h a, dddd')}s`}
                 >
                   <div className="trend-header">
                     <h3>Availability Trend</h3>
