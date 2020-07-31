@@ -172,7 +172,7 @@ class StationPopup extends React.Component {
                   </div>
                 </Accordion>
               </li>
-              <li>
+              {/* <li>
                 <Accordion
                   heading="There are 2 comments about this station"
                   disclaimer="Only comments published within 24 hours will be displayed"
@@ -202,12 +202,12 @@ class StationPopup extends React.Component {
                     </button>
                   </div>
                 </Accordion>
-              </li>
+              </li> */}
             </ul>
           </div>
-          <div className="get-direction">
+          {/* <div className="get-direction">
             <button>Get direction</button>
-          </div>
+          </div> */}
         </div>
         <div className="station-info-bg" onClick={this.updateSelectedStation}></div>
       </div>
