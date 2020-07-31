@@ -8,6 +8,9 @@ var trendsRouter = require('./routes/trends');
 
 var app = express();
 
+var mongoHost = process.env.MONGO_DB_HOST;
+console.log('mongoHost: ', mongoHost);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
