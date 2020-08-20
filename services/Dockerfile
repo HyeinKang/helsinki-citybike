@@ -1,8 +1,6 @@
 FROM node:latest
-RUN mkdir -p /usr/src/services
-WORKDIR /usr/src/services
-COPY package.json /usr/src/services/
+WORKDIR /services
+COPY package.json ./
 RUN npm install
-COPY . /usr/src/services
-EXPOSE 3000
+COPY ./ .
 CMD [ "npm", "start" ]

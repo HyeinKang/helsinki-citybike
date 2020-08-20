@@ -17,7 +17,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/stations', stationsRouter);
-app.use('/trends', trendsRouter);
+app.use('/api/stations', stationsRouter);
+app.use('/api/trends', trendsRouter);
+
+app.get('/api/test', function(req, res){
+  res.json({'averageBikesByHour': 'roar'});
+});
 
 module.exports = app;

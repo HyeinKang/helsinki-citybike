@@ -8,13 +8,14 @@ services:
     build: ./app
     image: hyeink/helsinkicitybike_app
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/app:/app
+      - ${WEBAPP_STORAGE_HOME}/app/build:/var/www/public
     ports:
-      - "443:3000"
+      - "8080:80"
     links:
       - mongo
     networks:
       - backend
+      - helsinki-citybike
   mongo:
     container_name: citybike-mongo
     image: mongo
@@ -40,10 +41,13 @@ services:
       - .env
     volumes:
       - ${WEBAPP_STORAGE_HOME}/api:/api
+    ports:
+      - "3000:3000"
     environment:
       MONGO_DB_HOST: mongo
     networks:
       - backend
+      - helsinki-citybike
   services:
     container_name: citybike-services
     build: ./services
@@ -54,8 +58,24 @@ services:
       - ${WEBAPP_STORAGE_HOME}/services:/services
     networks:
       - services
+      - helsinki-citybike
+  webserver:
+    image: nginx
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ${WEBAPP_STORAGE_HOME}/app/build:/var/www/public
+      - ${WEBAPP_STORAGE_HOME}/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - helsinki-citybike
 volumes:
   mongodata:
 networks:
+  helsinki-citybike:
+    driver: bridge
   backend:
   services:
