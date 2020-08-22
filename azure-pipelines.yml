@@ -34,7 +34,7 @@ steps:
       BIKE_TREND_PASSOWRD=oLse4hUECQxwD
       
       API_URL=api/trends
-      
+      PUBLIC_PATH=/var/www/prod
     action: 'Build services'
 - task: DockerCompose@0
   inputs:
