@@ -18,6 +18,24 @@ steps:
     azureSubscription: 'Hyein(c1347830-c5cc-4bf9-b998-832739052fca)'
     azureContainerRegistry: '{"loginServer":"helsinkicitybikeacr.azurecr.io", "id" : "/subscriptions/c1347830-c5cc-4bf9-b998-832739052fca/resourceGroups/helsinki-citybike-rg/providers/Microsoft.ContainerRegistry/registries/helsinkicitybikeacr"}'
     dockerComposeFile: 'docker-compose.yml'
+    dockerComposeFileArgs: |
+      MONGO_DB_HOST=citybike-mongo
+      
+      MONGO_INITDB_DATABASE=bikeStations
+      MONGO_ROOT_USER=cityBikeMap2020
+      MONGO_ROOT_PASSWORD=usK_@hrB7MRZ3E
+      
+      STATION_DB=bikeStations
+      STATION_DB_USER=admin
+      STATION_DB_PASSWORD=zTi8wnLuYcwn
+      
+      BIKE_TREND_DB=bikeTrend
+      BIKE_TREND_USER=bike_trend
+      BIKE_TREND_PASSOWRD=oLse4hUECQxwD
+      
+      API_URL=api/trends
+      
+      WEBAPP_STORAGE_HOME=/Users/hyeinkang/owl/helsinki-citybike
     action: 'Build services'
 - task: DockerCompose@0
   inputs:
