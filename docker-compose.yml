@@ -8,7 +8,7 @@ services:
     build: ./app
     image: hyeink/helsinkicitybike_app
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/app/build:/var/www/public
+      - ${WEBAPP_STORAGE_HOME}/app/build:${PUBLIC_PATH}
     ports:
       - "8080:80"
     networks:
@@ -69,9 +69,11 @@ services:
     container_name: webserver
     restart: unless-stopped
     tty: true
+    environment:
+      PUBLIC_PATH: ${PUBLIC_PATH}
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/app/build:/var/www/public
-      - ${WEBAPP_STORAGE_HOME}/nginx/conf.d/:/etc/nginx/conf.d/
+      - ${WEBAPP_STORAGE_HOME}/app/build:${PUBLIC_PATH}
+      - ${WEBAPP_STORAGE_HOME}/nginx/templates:/etc/nginx/templates
     ports:
       - "80:80"
       - "443:443"
