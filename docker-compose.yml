@@ -11,25 +11,23 @@ services:
       - ${WEBAPP_STORAGE_HOME}/app/build:/var/www/public
     ports:
       - "8080:80"
-    links:
-      - mongo
     networks:
       - backend
       - helsinki-citybike
+    environment:
+      API_URL: ${API_URL}
   mongo:
     container_name: citybike-mongo
     image: mongo
-    env_file:
-      - .env
     volumes:
-      - mongodata:/data/db
+      - ${WEBAPP_STORAGE_HOME}/data:/data/db
     networks:
       - backend
       - services
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=bikeStations
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
       - "27017:27017"
     command: mongod
@@ -37,14 +35,18 @@ services:
     container_name: citybike-api
     build: ./api
     image: hyeink/helsinkicitybike_api
-    env_file:
-      - .env
     volumes:
       - ${WEBAPP_STORAGE_HOME}/api:/api
     ports:
       - "3000:3000"
     environment:
-      MONGO_DB_HOST: mongo
+      MONGO_DB_HOST: ${MONGO_DB_HOST}
+      STATION_DB: ${STATION_DB}
+      STATION_DB_USER: ${STATION_DB_USER}
+      STATION_DB_PASSWORD: ${STATION_DB_PASSWORD}
+      BIKE_TREND_DB: ${BIKE_TREND_DB}
+      BIKE_TREND_USER: ${BIKE_TREND_USER}
+      BIKE_TREND_PASSOWRD: ${BIKE_TREND_PASSOWRD}
     networks:
       - backend
       - helsinki-citybike
@@ -52,8 +54,11 @@ services:
     container_name: citybike-services
     build: ./services
     image: hyeink/helsinkicitybike_services
-    env_file:
-      - .env
+    environment:
+      MONGO_DB_HOST: ${MONGO_DB_HOST}
+      BIKE_TREND_DB: ${BIKE_TREND_DB}
+      BIKE_TREND_USER: ${BIKE_TREND_USER}
+      BIKE_TREND_PASSOWRD: ${BIKE_TREND_PASSOWRD}
     volumes:
       - ${WEBAPP_STORAGE_HOME}/services:/services
     networks:

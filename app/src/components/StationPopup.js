@@ -45,7 +45,7 @@ class StationPopup extends React.Component {
     const { stationId, stationName, stationCapability, bikeAvailability } = this.props.selectedStation;
     const that = this;
 
-    axios.get(`api/trends/${stationId}/${this.state.dayNumber}`)
+    axios.get(`${process.env.API_URL}/${stationId}/${this.state.dayNumber}`)
     .then(res => {
       that.setState({'bikeTrends': res.data}); // [{averageBikesAvailable: 1, time:0}]
       if(that.state.averageBikesToday === "...") {
