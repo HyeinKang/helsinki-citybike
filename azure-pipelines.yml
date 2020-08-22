@@ -35,7 +35,6 @@ steps:
       
       API_URL=api/trends
       
-      WEBAPP_STORAGE_HOME=/Users/hyeinkang/owl/helsinki-citybike
     action: 'Build services'
 - task: DockerCompose@0
   inputs:
