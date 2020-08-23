@@ -11,7 +11,7 @@ pool:
 
 steps:
 
-- script: echo Hello, world! $(system.defaultworkingdirectory) and ${env.secureFIlePath}
+- script: echo Hello, world! $(system.defaultworkingdirectory) and $(env.secureFIlePath)
   displayName: 'Run a one-line script'
 - task: DownloadSecureFile@1
   name: env
