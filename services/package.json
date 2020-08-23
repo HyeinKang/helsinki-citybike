@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "if [$NODE_ENV == 'prod']; then node app.js; else nodemon app.js; fi"
   },
   "author": "",
   "license": "ISC",

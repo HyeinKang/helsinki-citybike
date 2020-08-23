@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon -L ./bin/www"
+    "start": "if [$NODE_ENV == 'production']; then node -L ./bin/www; else nodemon -L ./bin/www; fi"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

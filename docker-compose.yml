@@ -16,8 +16,6 @@ services:
       - helsinki-citybike
     env_file:
       - .env
-    environment:
-      API_URL: ${API_URL}
   mongo:
     container_name: citybike-mongo
     image: mongo
@@ -28,10 +26,6 @@ services:
       - services
     env_file:
       - .env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
       - "27017:27017"
     command: mongod
@@ -45,14 +39,6 @@ services:
       - "3000:3000"
     env_file:
       - .env
-    environment:
-      MONGO_DB_HOST: ${MONGO_DB_HOST}
-      STATION_DB: ${STATION_DB}
-      STATION_DB_USER: ${STATION_DB_USER}
-      STATION_DB_PASSWORD: ${STATION_DB_PASSWORD}
-      BIKE_TREND_DB: ${BIKE_TREND_DB}
-      BIKE_TREND_USER: ${BIKE_TREND_USER}
-      BIKE_TREND_PASSOWRD: ${BIKE_TREND_PASSOWRD}
     networks:
       - backend
       - helsinki-citybike
@@ -62,11 +48,6 @@ services:
     image: hyeink/helsinkicitybike_services
     env_file:
       - .env
-    environment:
-      MONGO_DB_HOST: ${MONGO_DB_HOST}
-      BIKE_TREND_DB: ${BIKE_TREND_DB}
-      BIKE_TREND_USER: ${BIKE_TREND_USER}
-      BIKE_TREND_PASSOWRD: ${BIKE_TREND_PASSOWRD}
     volumes:
       - ./services:/services
     networks:
@@ -79,8 +60,6 @@ services:
     tty: true
     env_file:
       - .env
-    environment:
-      PUBLIC_PATH: ${PUBLIC_PATH}
     volumes:
       - ./app/build:${PUBLIC_PATH}
       - ./nginx/templates:/etc/nginx/templates

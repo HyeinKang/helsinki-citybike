@@ -3,4 +3,4 @@ WORKDIR /services
 COPY package.json ./
 RUN npm install
 COPY ./ .
-CMD [ "npm", "start" ]
+CMD "NODE_ENV=${NODE_ENV} npm start"
