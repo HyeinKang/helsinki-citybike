@@ -14,6 +14,8 @@ services:
     networks:
       - backend
       - helsinki-citybike
+    env_file:
+      - .env
     environment:
       API_URL: ${API_URL}
   mongo:
@@ -24,6 +26,8 @@ services:
     networks:
       - backend
       - services
+    env_file:
+      - .env
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
@@ -39,6 +43,8 @@ services:
       - ${WEBAPP_STORAGE_HOME}/api:/api
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       MONGO_DB_HOST: ${MONGO_DB_HOST}
       STATION_DB: ${STATION_DB}
@@ -54,6 +60,8 @@ services:
     container_name: citybike-services
     build: ./services
     image: hyeink/helsinkicitybike_services
+    env_file:
+      - .env
     environment:
       MONGO_DB_HOST: ${MONGO_DB_HOST}
       BIKE_TREND_DB: ${BIKE_TREND_DB}
@@ -69,6 +77,8 @@ services:
     container_name: webserver
     restart: unless-stopped
     tty: true
+    env_file:
+      - .env
     environment:
       PUBLIC_PATH: ${PUBLIC_PATH}
     volumes:
@@ -79,8 +89,6 @@ services:
       - "443:443"
     networks:
       - helsinki-citybike
-volumes:
-  mongodata:
 networks:
   helsinki-citybike:
     driver: bridge
