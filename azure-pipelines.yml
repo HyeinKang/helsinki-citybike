@@ -10,6 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 - task: DockerCompose@0
@@ -19,22 +20,22 @@ steps:
     azureContainerRegistry: '{"loginServer":"helsinkicitybikeacr.azurecr.io", "id" : "/subscriptions/c1347830-c5cc-4bf9-b998-832739052fca/resourceGroups/helsinki-citybike-rg/providers/Microsoft.ContainerRegistry/registries/helsinkicitybikeacr"}'
     dockerComposeFile: 'docker-compose.yml'
     dockerComposeFileArgs: |
-      MONGO_DB_HOST=citybike-mongo
+      MONGO_DB_HOST=${MONGO_DB_HOST}
       
-      MONGO_INITDB_DATABASE=bikeStations
-      MONGO_ROOT_USER=cityBikeMap2020
-      MONGO_ROOT_PASSWORD=usK_@hrB7MRZ3E
+      MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      MONGO_ROOT_USER=${MONGO_ROOT_USER}
+      MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       
-      STATION_DB=bikeStations
-      STATION_DB_USER=admin
-      STATION_DB_PASSWORD=zTi8wnLuYcwn
+      STATION_DB=${STATION_DB}
+      STATION_DB_USER=${STATION_DB_USER}
+      STATION_DB_PASSWORD=${STATION_DB_PASSWORD}
       
-      BIKE_TREND_DB=bikeTrend
-      BIKE_TREND_USER=bike_trend
-      BIKE_TREND_PASSOWRD=oLse4hUECQxwD
+      BIKE_TREND_DB=${BIKE_TREND_DB}
+      BIKE_TREND_USER=${BIKE_TREND_USER}
+      BIKE_TREND_PASSOWRD=${BIKE_TREND_PASSOWRD}
       
-      API_URL=api/trends
-      PUBLIC_PATH=/var/www/prod
+      API_URL=${API_URL}
+      PUBLIC_PATH=${PUBLIC_PATH}
     action: 'Build services'
 - task: DockerCompose@0
   inputs:
