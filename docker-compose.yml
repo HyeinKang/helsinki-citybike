@@ -24,13 +24,16 @@ services:
     networks:
       - backend
       - services
-    env_file:
-      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
       - "27017:27017"
     command: mongod
   api:
     container_name: citybike-api
+    restart: on-failure
     build: ./api
     image: hyeink/helsinkicitybike_api
     volumes:
@@ -44,6 +47,7 @@ services:
       - helsinki-citybike
   services:
     container_name: citybike-services
+    restart: on-failure
     build: ./services
     image: hyeink/helsinkicitybike_services
     env_file:
