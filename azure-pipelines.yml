@@ -13,32 +13,17 @@ steps:
 
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
-- task: CmdLine@2
+- task: DownloadSecureFile@1
+  name: env
   inputs:
-    script: 'pwd'
+    secureFile: '.env'
+
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Azure Container Registry'
     azureSubscription: 'Hyein(c1347830-c5cc-4bf9-b998-832739052fca)'
     azureContainerRegistry: '{"loginServer":"helsinkicitybikeacr.azurecr.io", "id" : "/subscriptions/c1347830-c5cc-4bf9-b998-832739052fca/resourceGroups/helsinki-citybike-rg/providers/Microsoft.ContainerRegistry/registries/helsinkicitybikeacr"}'
     dockerComposeFile: 'docker-compose.yml'
-    dockerComposeFileArgs: |
-      MONGO_DB_HOST=${MONGO_DB_HOST}
-      
-      MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      MONGO_ROOT_USER=${MONGO_ROOT_USER}
-      MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-      
-      STATION_DB=${STATION_DB}
-      STATION_DB_USER=${STATION_DB_USER}
-      STATION_DB_PASSWORD=${STATION_DB_PASSWORD}
-      
-      BIKE_TREND_DB=${BIKE_TREND_DB}
-      BIKE_TREND_USER=${BIKE_TREND_USER}
-      BIKE_TREND_PASSOWRD=${BIKE_TREND_PASSOWRD}
-      
-      API_URL=${API_URL}
-      PUBLIC_PATH=${PUBLIC_PATH}
     action: 'Build services'
 - task: DockerCompose@0
   inputs:
@@ -46,23 +31,6 @@ steps:
     azureSubscription: 'Hyein(c1347830-c5cc-4bf9-b998-832739052fca)'
     azureContainerRegistry: '{"loginServer":"helsinkicitybikeacr.azurecr.io", "id" : "/subscriptions/c1347830-c5cc-4bf9-b998-832739052fca/resourceGroups/helsinki-citybike-rg/providers/Microsoft.ContainerRegistry/registries/helsinkicitybikeacr"}'
     dockerComposeFile: 'docker-compose.yml'
-    dockerComposeFileArgs: |
-      MONGO_DB_HOST=${MONGO_DB_HOST}
-      
-      MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      MONGO_ROOT_USER=${MONGO_ROOT_USER}
-      MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-      
-      STATION_DB=${STATION_DB}
-      STATION_DB_USER=${STATION_DB_USER}
-      STATION_DB_PASSWORD=${STATION_DB_PASSWORD}
-      
-      BIKE_TREND_DB=${BIKE_TREND_DB}
-      BIKE_TREND_USER=${BIKE_TREND_USER}
-      BIKE_TREND_PASSOWRD=${BIKE_TREND_PASSOWRD}
-      
-      API_URL=${API_URL}
-      PUBLIC_PATH=${PUBLIC_PATH}
     action: 'Push services'
 - task: CopyFiles@2
   inputs:
