@@ -1,6 +1,7 @@
 FROM node:latest
+ENV NODE_ENV=${NODE_ENV}
 WORKDIR /api
 COPY package.json ./
 RUN npm install
 COPY ./ .
-CMD "NODE_ENV=${NODE_ENV} npm start"
+CMD [ "sh", "-c", "npm run ${NODE_ENV}" ]
