@@ -11,7 +11,7 @@ pool:
 
 steps:
 
-- script: echo Hello, world! $(system.defaultworkingdirectory)
+- script: echo Hello, world! $(system.defaultworkingdirectory) and ${env.secureFIlePath}
   displayName: 'Run a one-line script'
 - task: DownloadSecureFile@1
   name: env
@@ -22,6 +22,8 @@ steps:
     SourceFolder: '$(env.secureFIlePath)'
     Contents: '.env'
     TargetFolder: '$(system.defaultworkingdirectory)'
+- script: cd $(system.defaultworkingdirectory) && ls -la
+  displayName: 'Run a one-line script'
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Azure Container Registry'
