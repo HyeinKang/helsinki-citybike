@@ -11,7 +11,7 @@ pool:
 
 steps:
 
-- script: echo Hello, world! $(system.defaultworkingdirectory) and $(env.secureFIlePath)
+- script: echo Hello, world! $(system.defaultworkingdirectory) and $(Agent.TempDirectory)
   displayName: 'Run a one-line script'
 - task: DownloadSecureFile@1
   name: env
@@ -19,7 +19,7 @@ steps:
     secureFile: '.env'
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(env.secureFIlePath)'
+    SourceFolder: '$(Agent.TempDirectory)'
     Contents: '.env'
     TargetFolder: '$(system.defaultworkingdirectory)'
 - script: cd $(system.defaultworkingdirectory) && ls -la
