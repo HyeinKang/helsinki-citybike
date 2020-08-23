@@ -8,7 +8,7 @@ services:
     build: ./app
     image: hyeink/helsinkicitybike_app
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/app/build:${PUBLIC_PATH}
+      - ./app/build:${PUBLIC_PATH}
     ports:
       - "8080:80"
     networks:
@@ -22,7 +22,7 @@ services:
     container_name: citybike-mongo
     image: mongo
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/data:/data/db
+      - ./data:/data/db
     networks:
       - backend
       - services
@@ -40,7 +40,7 @@ services:
     build: ./api
     image: hyeink/helsinkicitybike_api
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/api:/api
+      - ./api:/api
     ports:
       - "3000:3000"
     env_file:
@@ -68,7 +68,7 @@ services:
       BIKE_TREND_USER: ${BIKE_TREND_USER}
       BIKE_TREND_PASSOWRD: ${BIKE_TREND_PASSOWRD}
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/services:/services
+      - ./services:/services
     networks:
       - services
       - helsinki-citybike
@@ -82,8 +82,8 @@ services:
     environment:
       PUBLIC_PATH: ${PUBLIC_PATH}
     volumes:
-      - ${WEBAPP_STORAGE_HOME}/app/build:${PUBLIC_PATH}
-      - ${WEBAPP_STORAGE_HOME}/nginx/templates:/etc/nginx/templates
+      - ./app/build:${PUBLIC_PATH}
+      - ./nginx/templates:/etc/nginx/templates
     ports:
       - "80:80"
       - "443:443"
