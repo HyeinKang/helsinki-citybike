@@ -10,7 +10,7 @@ services:
     volumes:
       - ./app/build:${PUBLIC_PATH}
     ports:
-      - "8080:80"
+      - "4000:80"
     networks:
       - backend
       - helsinki-citybike
@@ -42,6 +42,8 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    environment:
+      WAIT_HOSTS: mongo:27017
     networks:
       - backend
       - helsinki-citybike
@@ -52,6 +54,8 @@ services:
     image: hyeink/helsinkicitybike_services
     env_file:
       - .env
+    environment:
+      WAIT_HOSTS: mongo:27017
     volumes:
       - ./services:/services
     networks:

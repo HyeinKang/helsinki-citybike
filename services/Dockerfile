@@ -1,7 +1,12 @@
 FROM node:latest
 ENV NODE_ENV=${NODE_ENV}
-WORKDIR /usr/src/services
+WORKDIR /services
 COPY package*.json ./
 RUN npm install
 COPY . .
-CMD [ "sh", "-c", "npm run ${NODE_ENV}" ]
+
+## THE LIFE SAVER
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+CMD [ "sh", "-c", "/wait && npm run ${NODE_ENV}" ]
