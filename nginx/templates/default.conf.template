@@ -2,15 +2,12 @@ server {
     listen 80;
     server_name citybikes-map.fi
 
-    index index.php index.html;
-    error_log  /var/log/nginx/error.log;
-    access_log /var/log/nginx/access.log;
-    root ${PUBLIC_PATH};
-
-    return 301 https://$host$request_uri;
+    location / {
+      return 301 https://$host$request_uri;
+    }    
 
     location /.well-known/acme-challenge/ {
-      root /var/www/certbot;
+      root /var/www/prod/certbot;
     }
 }
 
