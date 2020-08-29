@@ -20,7 +20,7 @@ services:
     container_name: citybike-mongo
     image: mongo
     volumes:
-      - ./data:/data/db
+      - ./data/mongodb:/data/db
     networks:
       - backend
       - services
@@ -71,11 +71,20 @@ services:
     volumes:
       - ./app/build:${PUBLIC_PATH}
       - ./nginx/templates:/etc/nginx/templates
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     ports:
       - "80:80"
       - "443:443"
     networks:
       - helsinki-citybike
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 networks:
   helsinki-citybike:
     driver: bridge
