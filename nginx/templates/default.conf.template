@@ -6,19 +6,19 @@ server {
     }    
 
     location /.well-known/acme-challenge/ {
-      root /var/www/prod/certbot;
+      root /var/www/certbot;
     }
 }
 
 server {
   listen 443 ssl;
-  server_name citybikes-map.fi
+  server_name citybikes-map.fi;
 
-  {# ssl_certificate /etc/letsencrypt/live/citybikes-map.fi/fullchain.pem;
+  ssl_certificate /etc/letsencrypt/live/citybikes-map.fi/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/citybikes-map.fi/privkey.pem;
 
   include /etc/letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; #}
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
   access_log /var/log/nginx/data-access.log combined;';
 
