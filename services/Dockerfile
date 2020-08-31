@@ -1,9 +1,8 @@
 FROM node:latest
 ENV NODE_ENV=${NODE_ENV}
+COPY . ./services
 WORKDIR /services
-COPY package*.json ./
 RUN npm install
-COPY . .
 
 ## THE LIFE SAVER
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
