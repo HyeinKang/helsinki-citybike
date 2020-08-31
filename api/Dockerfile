@@ -1,6 +1,6 @@
 FROM node:latest
 ENV NODE_ENV=${NODE_ENV}
-COPY . ./api
+COPY . /api
 WORKDIR /api
 RUN npm install
 

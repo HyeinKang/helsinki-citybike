@@ -1,6 +1,6 @@
 FROM node:latest
 ENV NODE_ENV=${NODE_ENV}
-COPY . ./services
+COPY . /services
 WORKDIR /services
 RUN npm install
 
