@@ -13,7 +13,7 @@ To display informations of helsinki city bike stations.
 * [ ] Add the site to google search console
 * [ ] Check google crawling is working
 * [ ] Submit sitemap
-* [ ] Change the host to Azure
+* [x] Change the host to Azure
 
 * [x] Setup containers with docker-compose: MongoDB, API, Application
 * [x] Setup MongoDB
@@ -33,3 +33,6 @@ To display informations of helsinki city bike stations.
 
 ## Author
   Hyein Kang (heina.kang@gmail.com)
+
+## To Read
+https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
