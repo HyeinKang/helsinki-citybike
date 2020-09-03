@@ -85,6 +85,7 @@ class StationPopup extends React.Component {
 
     const chartOptions = {
       responsive: true,
+      maintainAspectRatio : false,
       layout: {
           padding: {
               left: 0,
