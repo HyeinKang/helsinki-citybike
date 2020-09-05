@@ -3,4 +3,4 @@ COPY . /app
 WORKDIR /app
 RUN npm install
 EXPOSE 4000
-RUN npm run build
+RUN [ "sh", "-c", "npm run ${NODE_ENV}" ]
