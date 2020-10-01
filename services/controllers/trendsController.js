@@ -17,6 +17,7 @@ module.exports = (app) => {
       }
       `,
     }).then(res => {
+      console.log('Available biked importing');
       const bikeRentalStations = res.data.bikeRentalStations;
       bikeRentalStations.forEach((station) => {
         const newTimeline = Trends({
@@ -28,7 +29,6 @@ module.exports = (app) => {
           if (err) throw err;
         });
       });
-      console.log('Available biked imported');
     });
   });
 }

@@ -6,7 +6,7 @@ const Trend = require('../models/trends')
 
 const today = moment().tz("Europe/Helsinki").day()
 
-router.get('/:id/:dayNumber', function(req, res, next) {
+router.get('/:id/:dayNumber', (req, res, next) => {
   Trend
     .find({ "stationId": req.params.id })
     .maxTime(10000)

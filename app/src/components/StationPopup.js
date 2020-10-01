@@ -59,7 +59,7 @@ class StationPopup extends React.Component {
       const currentHour = moment().tz("Europe/Helsinki").hour();
 
       let colorsArray = [];
-      for (var i = 0; i <= 23; i++) {
+      for (let i = 0; i <= 23; i++) {
         colorsArray.push(baseColor);
       }
       colorsArray[currentHour] = highlightColor;
