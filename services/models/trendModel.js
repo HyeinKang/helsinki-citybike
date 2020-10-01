@@ -1,13 +1,10 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const { Schema } = mongoose
 
-var Schema = mongoose.Schema;
-
-var trendSchema = new Schema({
+const Trends = mongoose.model('Trend', new Schema({
   stationId: String,
   bikesAvailable: Number,
   dateTime: Date
-});
-
-var Trends = mongoose.model('Trend', trendSchema);
+}));
 
 module.exports = Trends;

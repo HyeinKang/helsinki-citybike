@@ -1,15 +1,13 @@
 const { createApolloFetch } = require('apollo-fetch');
-var cron = require('node-cron');
-var Trends = require('../models/trendModel');
+const cron = require('node-cron');
+const Trends = require('../models/trendModel');
 
-module.exports = function(app) {
+module.exports = (app) => {
   const fetch = createApolloFetch({
     uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
   });
 
   cron.schedule('*/10 * * * *', () => {
-    console.log('running a task every 10 mins');
-    
     fetch({
       query: `query getAllStations {
         bikeRentalStations {
@@ -19,15 +17,14 @@ module.exports = function(app) {
       }
       `,
     }).then(res => {
-      const data = res.data.bikeRentalStations;
-      data.reduce((obj, item) => {
-        
-        var newTimeline = Trends({
-          bikesAvailable: item.bikesAvailable,
+      const bikeRentalStations = res.data.bikeRentalStations;
+      bikeRentalStations.forEach((station) => {
+        const newTimeline = Trends({
+          bikesAvailable: station.bikesAvailable,
           dateTime: Date.now(),
-          stationId: item.stationId
+          stationId: station.stationId
         });
-        newTimeline.save(function(err) {
+        newTimeline.save((err) => {
           if (err) throw err;
         });
       });
