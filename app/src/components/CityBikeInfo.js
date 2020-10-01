@@ -6,14 +6,13 @@ import _ from 'lodash';
 import Map from './Map';
 import StationPopup from './StationPopup';
 
-async function asyncForEach(array, callback) {
+const asyncForEach = async(array, callback) => {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }
 }
 
 const CityBikeInfo = () => {
-  // const stationIds = [133, 134, 290];
   const [allStations, setAllStations] = useState(null);
   const [stations, setStations] = useState([]);
   const [bounds, setBounds] = useState(null);

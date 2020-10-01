@@ -63,7 +63,7 @@ class Map extends React.Component {
       updateBounds(map.getBounds());
     };
 
-    function StationsInfo({location}) {
+    const StationsInfoPopup = ({location}) => {
       const stationCapability = location.bikesAvailable + location.spacesAvailable;
       const bikeAvailability = location.bikesAvailable;
 
@@ -106,7 +106,7 @@ class Map extends React.Component {
               ))}
             </Layer>
           { locations.map((location) => (
-            <StationsInfo key={location.stationId} location={location} />
+            <StationsInfoPopup key={location.stationId} location={location} />
           ))}
           <ZoomControl position="bottom-right" />
         </MapboxMap>

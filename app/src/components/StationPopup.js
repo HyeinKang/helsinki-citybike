@@ -158,7 +158,6 @@ class StationPopup extends React.Component {
           <div className="station-info-content__header">
             <div>
               <h2>{stationName}</h2>
-              {/* <p>N meters away</p> */}
             </div>
             <div className="close" onClick={this.updateSelectedStation}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -183,42 +182,8 @@ class StationPopup extends React.Component {
                   </div>
                 </Accordion>
               </li>
-              {/* <li>
-                <Accordion
-                  heading="There are 2 comments about this station"
-                  disclaimer="Only comments published within 24 hours will be displayed"
-                >
-                  <div className="comment-wall">
-                    <h3 className="header">Comments</h3>
-                    <ul className="comments">
-                      <li className="comment">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <div className="comment__publisher">Some name, <span>16h ago</span></div>
-                      </li>
-                      <li className="comment">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada neque sed eros pretium vehicula. Proin nec dictum dui. Nunc est orci, accumsan at semper et, iaculis dapibus est. Vestibulum vulputate leo vitae lectus scelerisque, at viverra fusce.</p>
-                        <div className="comment__publisher">Some name, <span>10h ago</span></div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="comment-input">
-                    <input type="text" maxLength="255" placeholder="Add comment..." />
-                    <button>
-                      <div className="icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                          <path d="M0 0h24v24H0z" fill="none" />
-                          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                        </svg>
-                      </div>
-                    </button>
-                  </div>
-                </Accordion>
-              </li> */}
             </ul>
           </div>
-          {/* <div className="get-direction">
-            <button>Get direction</button>
-          </div> */}
         </div>
         <div className="station-info-bg" onClick={this.updateSelectedStation}></div>
       </div>
