@@ -1,18 +1,15 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const { Schema } = mongoose
+const bikeTrendDB = `mongodb://${process.env.BIKE_TREND_USER}:${process.env.BIKE_TREND_PASSWORD}@${process.env.MONGO_DB_HOST}:27017/${process.env.BIKE_TREND_DB}`
 
-var mongoDB = `mongodb://${process.env.BIKE_TREND_USER}:${process.env.BIKE_TREND_PASSWORD}@${process.env.MONGO_DB_HOST}:27017/${process.env.BIKE_TREND_DB}`;
-mongoose.connect(mongoDB, { useNewUrlParser: true })
+mongoose.connect(bikeTrendDB, { useNewUrlParser: true })
    .then(() =>  console.log('connection successful'))
-   .catch((err) => console.error(err));
+   .catch((err) => console.error(err))
 
-var Schema = mongoose.Schema;
-
-var trendSchema = new Schema({
+const Trends = mongoose.model('Trend', new Schema({
   stationId: String,
   bikesAvailable: Number,
   dateTime: Date
-});
+}))
 
-var Trends = mongoose.model('Trend', trendSchema);
-
-module.exports = Trends;
+module.exports = Trends
