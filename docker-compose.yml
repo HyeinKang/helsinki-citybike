@@ -36,9 +36,6 @@ services:
     restart: on-failure
     build: ./api
     image: hyeink/helsinkicitybike_api
-    volumes:
-      - ./api:/usr/src/api
-      - /usr/src/api/node_modules
     ports:
       - "3000:3000"
     env_file:

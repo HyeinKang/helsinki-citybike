@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon -L ./src/index.ts -e ts ",
-    "production": "node ./bin/www",
+    "production": "node ./build",
     "build": "tsc --project ./"
   },
   "dependencies": {
