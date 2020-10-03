@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon -L ./app.ts -e ts ",
+    "dev": "nodemon -L ./src/index.ts -e ts ",
     "production": "node ./bin/www",
     "build": "tsc --project ./"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.161",
+    "@types/mongoose": "^5.7.36",
     "cookie-parser": "~1.4.4",
     "express": "^4.16.4",
     "lodash": "^4.17.19",
