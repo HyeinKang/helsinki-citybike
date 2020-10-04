@@ -1,6 +1,9 @@
-FROM node:latest
+FROM node:13
+
 COPY . /app
 WORKDIR /app
+
 RUN npm install
-EXPOSE 4000
-RUN [ "sh", "-c", "npm run ${NODE_ENV}" ]
+RUN npm rebuild node-sass
+
+CMD [ "npm", "run", "dev" ]
