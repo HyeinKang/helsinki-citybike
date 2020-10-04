@@ -1,13 +1,18 @@
-const { createApolloFetch } = require('apollo-fetch');
-const cron = require('node-cron');
-const Trends = require('../models/trendModel');
+import { createApolloFetch } from 'apollo-fetch';
+import cron from 'node-cron';
+import { TrendModel } from '../models/trendModel'
 
-module.exports = (app) => {
+interface Station {
+  stationId: string;
+  bikesAvailable: number;
+}
+
+const trendsController = () => {
   const fetch = createApolloFetch({
     uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
   });
 
-  cron.schedule('*/10 * * * *', () => {
+  cron.schedule('* * * * *', () => {
     fetch({
       query: `query getAllStations {
         bikeRentalStations {
@@ -19,8 +24,8 @@ module.exports = (app) => {
     }).then(res => {
       console.log('Available biked importing');
       const bikeRentalStations = res.data.bikeRentalStations;
-      bikeRentalStations.forEach((station) => {
-        const newTimeline = Trends({
+      bikeRentalStations.forEach((station:Station) => {
+        const newTimeline = new TrendModel({
           bikesAvailable: station.bikesAvailable,
           dateTime: Date.now(),
           stationId: station.stationId
@@ -31,4 +36,7 @@ module.exports = (app) => {
       });
     });
   });
+
 }
+
+export { trendsController }

@@ -13,6 +13,7 @@ node_modules
 # production
 api/build
 app/build
+services/build
 
 # misc
 .DS_Store
