@@ -1,0 +1,62 @@
+version: "3"
+
+services:
+  app:
+    container_name: citybike-app
+    restart: always
+    stdin_open: true
+    build: ./app
+    ports:
+      - "4000:80"
+    networks:
+      - backend
+      - helsinki-citybike
+    env_file:
+      - .env.development
+  mongo:
+    container_name: citybike-mongo
+    image: mongo
+    volumes:
+      - ./data/mongodb:/data/db
+    networks:
+      - backend
+      - services
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    ports:
+      - "27017:27017"
+    command: mongod
+  api:
+    container_name: citybike-api
+    restart: on-failure
+    build: ./api
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.development
+    environment:
+      WAIT_HOSTS: mongo:27017
+    networks:
+      - backend
+      - helsinki-citybike
+  services:
+    container_name: citybike-services
+    restart: on-failure
+    build: ./services
+    env_file:
+      - .env.development
+    environment:
+      WAIT_HOSTS: mongo:27017
+    volumes:
+      - ./services:/usr/src/services
+      - /usr/src/services/node_modules
+    networks:
+      - services
+      - helsinki-citybike
+networks:
+  helsinki-citybike:
+    driver: bridge
+  backend:
+  services:
