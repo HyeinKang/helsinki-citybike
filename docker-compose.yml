@@ -1,21 +1,6 @@
 version: "3"
 
 services:
-  app:
-    container_name: citybike-app
-    restart: always
-    stdin_open: true
-    build: ./app
-    image: hyeink/helsinkicitybike_app
-    volumes:
-      - ./app/build:${PUBLIC_PATH}
-    ports:
-      - "4000:80"
-    networks:
-      - backend
-      - helsinki-citybike
-    env_file:
-      - .env
   mongo:
     container_name: citybike-mongo
     image: mongo
@@ -61,14 +46,15 @@ services:
       - services
       - helsinki-citybike
   webserver:
-    image: nginx
     container_name: webserver
     restart: unless-stopped
+    build: 
+      context: .
+      dockerfile: ./nginx/Dockerfile
     tty: true
     env_file:
       - .env
     volumes:
-      - ./app/build:${PUBLIC_PATH}
       - ./nginx/conf/${NGINX_CONF}:/etc/nginx/conf.d/default.conf
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
