@@ -7,7 +7,7 @@ services:
     stdin_open: true
     build: ./app
     ports:
-      - "4000:80"
+      - "80:4000"
     networks:
       - backend
       - helsinki-citybike
