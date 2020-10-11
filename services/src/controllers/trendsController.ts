@@ -2,7 +2,7 @@ import { createApolloFetch } from 'apollo-fetch';
 import cron from 'node-cron';
 import { TrendModel } from '../models/trendModel'
 
-interface Station {
+type Station = {
   stationId: string;
   bikesAvailable: number;
 }

@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose'
 import { getbikeTrendDB } from '../config'
 
-interface StationCollection {
+type StationCollection = {
   dateTime: string;
 }
 

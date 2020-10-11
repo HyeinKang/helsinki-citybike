@@ -6,7 +6,7 @@ import { TrendModel } from '../models/trendsModel'
 const trendsRouter = Router()
 const today = moment().tz("Europe/Helsinki").day()
 
-interface AverageBikes {
+type AverageBikes = {
   averageBikesAvailable: number;
   time: string;
 }
