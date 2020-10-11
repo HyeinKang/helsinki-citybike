@@ -5,7 +5,7 @@ import { TrendModel } from '../models/trendModel'
 type Station = {
   stationId: string;
   bikesAvailable: number;
-}
+};
 
 const trendsController = () => {
   const fetch = createApolloFetch({

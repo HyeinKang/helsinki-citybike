@@ -1,10 +1,10 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import _ from 'lodash'
-import moment from 'moment-timezone'
-import { TrendModel } from '../models/trendsModel'
+import _ from 'lodash';
+import moment from 'moment-timezone';
+import { TrendModel } from '../models/trendsModel';
 
-const trendsRouter = Router()
-const today = moment().tz("Europe/Helsinki").day()
+const trendsRouter = Router();
+const today = moment().tz("Europe/Helsinki").day();
 
 type AverageBikes = {
   averageBikesAvailable: number;
@@ -21,7 +21,7 @@ trendsRouter.get('/:id/:dayNumber', (req:Request, res:Response, next: NextFuncti
       const selectedDayNumber = req.params.dayNumber
       const availableBikesByDay = _.groupBy(availableBikesByStation, (stationCollection) => moment(stationCollection.dateTime).tz("Europe/Helsinki").day())
       const availableBikesByHour = _.groupBy(availableBikesByDay[selectedDayNumber||today], (stationCollection) => moment(stationCollection.dateTime).tz("Europe/Helsinki").hour())
-      let averageBikesByHour:Array<AverageBikes> = []
+      let averageBikesByHour:AverageBikes[] = []
 
       _.forEach(availableBikesByHour, (bikes, hour) => {
         const allBikesAmount = _.reduce(_.map(bikes, 'bikesAvailable'), (sum, n) => {
@@ -35,8 +35,8 @@ trendsRouter.get('/:id/:dayNumber', (req:Request, res:Response, next: NextFuncti
         }
         averageBikesByHour = [...averageBikesByHour, averageBikes]
       })
-      res.json(averageBikesByHour)
-    })
-})
+      res.json(averageBikesByHour);
+    });
+});
 
-export { trendsRouter }
+export { trendsRouter };
