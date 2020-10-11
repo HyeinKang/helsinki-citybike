@@ -3,7 +3,6 @@ FROM node:13
 COPY . /app
 WORKDIR /app
 
-RUN npm install
-RUN npm rebuild node-sass
+RUN yarn
 
-CMD [ "npm", "run", "dev" ]
+CMD [ "yarn", "dev" ]
