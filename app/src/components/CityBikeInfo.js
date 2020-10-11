@@ -85,12 +85,11 @@ const CityBikeInfo = () => {
       const { data } = await client.query({
         query: STAIONS_INFO,
         variables: {id},
+      }).then(()=>{
+        stationsArray = [...stationsArray, data.bikeRentalStation];
+        setIsLoading(false);
       });
-      stationsArray = [...stationsArray, data.bikeRentalStation];
     });
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 30)
 
     setStations([...stationsArray])
   }
