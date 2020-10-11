@@ -12,7 +12,7 @@ const trendsController = () => {
     uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
   });
 
-  cron.schedule('* * * * *', () => {
+  cron.schedule('*/10 * * * *', () => {
     fetch({
       query: `query getAllStations {
         bikeRentalStations {
