@@ -1,6 +1,12 @@
 import React from 'react';
+import { SelectedStation } from '../types';
 
-const StationPopover = (props) => {
+type Props = {
+  indicator: string;
+  isLoading: boolean;
+}
+
+const StationPopover = (props:SelectedStation & Props) => {
   const updateSelectedStation = () => {
     const selectedStation = {
       stationId: props.stationId,

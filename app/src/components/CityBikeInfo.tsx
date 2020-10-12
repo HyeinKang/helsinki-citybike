@@ -1,24 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import ApolloClient from 'apollo-client';
 import { useApolloClient } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import _ from 'lodash';
 
+import { BikeRentalStationDetail } from '../types'
+
 import Map from './Map';
 import StationPopup from './StationPopup';
 
-const asyncForEach = async(array, callback) => {
+const asyncForEach = async(array:number[], callback:(arg0:any, arg1:number, arg2:number[])=>{}) => {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
+    callback(array[index], index, array);
   }
-}
+};
+
+
+type BikeRentalStationDetails = BikeRentalStationDetail[] | null;
+
+type BikeRentalStation = {
+  stationId: number;
+  lat: number;
+  lon: number;
+};
+
+type BikeRentalStations = BikeRentalStation[] | null;
+
+type Bound = {
+  ne:{ lng: number; lat: number },
+  sw:{ lng: number; lat: number }
+} | null;
 
 const CityBikeInfo = () => {
-  const [allStations, setAllStations] = useState(null);
-  const [stations, setStations] = useState([]);
-  const [bounds, setBounds] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedStation, setSelectedStation] = useState(null);
-  const client = useApolloClient();
+  const [allStations, setAllStations] = useState<BikeRentalStations>(null);
+  const [stations, setStations] = useState<BikeRentalStationDetails>(null);
+  const [bounds, setBounds] = useState<Bound>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [selectedStation, setSelectedStation] = useState<BikeRentalStationDetail>(null);
+  const client:ApolloClient<object> = useApolloClient();
 
   const GET_ALL_STATIONS = gql`
   query getAllStations {
@@ -46,12 +65,12 @@ const CityBikeInfo = () => {
     if (!bounds) return false;
     setIsLoading(true);
 
-    const northMost = bounds._ne.lng;
-    const eastMost = bounds._ne.lat;
-    const southMost = bounds._sw.lng;
-    const westMost = bounds._sw.lat;
+    const northMost = bounds.ne.lng;
+    const eastMost = bounds.ne.lat;
+    const southMost = bounds.sw.lng;
+    const westMost = bounds.sw.lat;
 
-    let visibleStations = [];
+    let visibleStations:BikeRentalStation[] = [];
     !!allStations && allStations.forEach((station) => {
       const lonInsideBound = northMost >= station.lon && station.lon >= southMost;
       const latInsideBound = eastMost >= station.lat && station.lat >= westMost;
@@ -60,17 +79,18 @@ const CityBikeInfo = () => {
       }
     });
 
-    const stationIds = _.map(visibleStations, 'stationId');
-    getStationInfo(stationIds);
+    const stationIds:number[] = _.map(visibleStations, 'stationId');
+    getStationInfo(stationIds).then(()=>{setStations(stationsArray)});
   }
 
   useEffect(() => {
     if (!allStations) {
       const getAllStations = async () => {
-        const { data } = await client.query({
+        await client.query<BikeRentalStations>({
           query: GET_ALL_STATIONS,
-        });
-        setAllStations(data.bikeRentalStations);
+        }).then(({data})=>{
+          setAllStations(data);
+        })
       }
       getAllStations();
     }
@@ -79,26 +99,26 @@ const CityBikeInfo = () => {
     }
   }, [bounds, allStations, client, GET_ALL_STATIONS])
 
-  let stationsArray = [];
-  const getStationInfo = async (stationIds) => {
-    await asyncForEach(stationIds, async (id) => {
-      const { data } = await client.query({
+  let stationsArray:BikeRentalStationDetails = [];
+  const getStationInfo = async (stationIds:number[]) => {
+    asyncForEach(stationIds, async (id) => {
+      await client.query<BikeRentalStationDetail>({
         query: STAIONS_INFO,
         variables: {id},
-      }).then(()=>{
-        stationsArray = [...stationsArray, data.bikeRentalStation];
+      }).then(({data}) => {
+        stationsArray = [...stationsArray, data];
         setIsLoading(false);
+
+        return data;
       });
     });
-
-    setStations([...stationsArray])
   }
 
-  const updateBounds = (newBounds, oldBounds) => {
+  const updateBounds = (newBounds:Bound) => {
     setBounds(newBounds);
   }
 
-  const updateSelectedStation = (newStation, oldStation) => {
+  const updateSelectedStation = (newStation:BikeRentalStationDetail) => {
     setSelectedStation(newStation);
   }
 
@@ -106,8 +126,15 @@ const CityBikeInfo = () => {
 
   return (
     <div style={{'height': height}}>
-      { !!selectedStation && (<StationPopup updateSelectedStation={updateSelectedStation} selectedStation={selectedStation} />) }
-      <Map locations={stations} isLoading={isLoading} updateBounds={updateBounds} updateSelectedStation={updateSelectedStation} />
+      { !!selectedStation &&
+        (<StationPopup updateSelectedStation={updateSelectedStation} selectedStation={selectedStation} />)
+      }
+      <Map
+        locations={stations}
+        isLoading={isLoading}
+        updateBounds={updateBounds}
+        updateSelectedStation={updateSelectedStation}
+      />
     </div>
   );
 }

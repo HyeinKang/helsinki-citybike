@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 
-const Accordion = (props) => {
+type props = {
+  heading: string;
+  disclaimer: string;
+}
+
+const Accordion:FunctionComponent<props> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

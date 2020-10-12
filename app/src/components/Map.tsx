@@ -4,6 +4,8 @@ import { isMobile } from "react-device-detect";
 import { GeolocateControl } from "mapbox-gl";
 import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from 'react-mapbox-gl';
 
+import { BikeRentalStationDetail } from '../types'
+
 import MapboxGLButtonControl from "./MapboxGLButtonControl";
 import StationPopover from "./StationPopover";
 
@@ -11,22 +13,14 @@ const MapboxMap = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoiaGVpbmEta2FuZyIsImEiOiJja2FhNGppb2IwdDNqMnZxd3h1bnFja2NhIn0.si285aYkKGq4jcOjvpryzw',
 });
 
-type location = {
-  stationId: string;
-  lat: number;
-  lon: number;
-}
-
-interface State {
+type State = {
   center?: [number, number];
   zoom?: [number];
-  minZoom: [number];
-  maxZoom: [number];
   isLoading: boolean;
-  locations: location[];
-  updateBounds: ([]?)=>{};
-  updateSelectedStation: ()=>{};
-}
+  locations: BikeRentalStationDetail[] | null;
+  updateBounds: (newBounds: any) => void;
+  updateSelectedStation: (newStation: BikeRentalStationDetail) => {};
+};
 
 const Map: React.FunctionComponent<State> = (props) => {
   const { updateBounds, locations, isLoading, updateSelectedStation } = props;
@@ -39,17 +33,16 @@ const Map: React.FunctionComponent<State> = (props) => {
   useEffect(() => {
   }, [bounds, locations, isLoading]);
 
-  const onMapLoad = map => {
+  const onMapLoad = (map:mapboxgl.Map) => {
     /* Instantiate new controls with custom event handlers */
-    const refreshCtrl = new MapboxGLButtonControl({
-      title: "Refresh the station information",
-      innerHTML: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px" height="18px">
-                    <path d="M0 0h24v24H0V0z" fill="none" />
-                    <path
-                      d="M17.65 6.35c-1.63-1.63-3.94-2.57-6.48-2.31-3.67.37-6.69 3.35-7.1 7.02C3.52 15.91 7.27 20 12 20c3.19 0 5.93-1.87 7.21-4.56.32-.67-.16-1.44-.9-1.44-.37 0-.72.2-.88.53-1.13 2.43-3.84 3.97-6.8 3.31-2.22-.49-4.01-2.3-4.48-4.52C5.31 9.44 8.26 6 12 6c1.66 0 3.14.69 4.22 1.78l-1.51 1.51c-.63.63-.19 1.71.7 1.71H19c.55 0 1-.45 1-1V6.41c0-.89-1.08-1.34-1.71-.71l-.64.65z" />
-                  </svg>`,
-      eventHandler: () => {updateBounds(map.getBounds())}
-    });
+    const newBounds = map.getBounds();
+    const refreshCtrl:JSX.Element = (
+      <MapboxGLButtonControl
+        title="Refresh the station information"
+        innerHTML={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px" height="18px"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M17.65 6.35c-1.63-1.63-3.94-2.57-6.48-2.31-3.67.37-6.69 3.35-7.1 7.02C3.52 15.91 7.27 20 12 20c3.19 0 5.93-1.87 7.21-4.56.32-.67-.16-1.44-.9-1.44-.37 0-.72.2-.88.53-1.13 2.43-3.84 3.97-6.8 3.31-2.22-.49-4.01-2.3-4.48-4.52C5.31 9.44 8.26 6 12 6c1.66 0 3.14.69 4.22 1.78l-1.51 1.51c-.63.63-.19 1.71.7 1.71H19c.55 0 1-.45 1-1V6.41c0-.89-1.08-1.34-1.71-.71l-.64.65z" /></svg>`}
+        eventHandler={updateBounds(newBounds)}
+      ></MapboxGLButtonControl>
+    )
     const geolocate = new GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
@@ -57,7 +50,7 @@ const Map: React.FunctionComponent<State> = (props) => {
       showUserLocation: true,
     });
 
-    map.addControl(refreshCtrl, 'top-right');
+    // map.addControl(refreshCtrl, 'top-right');
 
     if (isMobile) {
       map.addControl(geolocate, 'top-left');
@@ -66,10 +59,13 @@ const Map: React.FunctionComponent<State> = (props) => {
       }, 500)
     }
 
-    updateBounds(map.getBounds());
+    updateBounds(newBounds);
   };
 
-  const StationsInfoPopup = ({location}) => {
+  const StationsInfoPopup = (location?:BikeRentalStationDetail) => {
+    if (!location) {
+      return <></>;
+    }
     const stationCapability = location.bikesAvailable + location.spacesAvailable;
     const bikeAvailability = location.bikesAvailable;
 
@@ -93,30 +89,30 @@ const Map: React.FunctionComponent<State> = (props) => {
 
   return (
     <div>
-      <MapboxMap
+      {/* <MapboxMap
           style="mapbox://styles/heina-kang/ckahkdlxb014m1itfktw9kt6s"
-          center={center}
-          zoom={zoom}
-          minZoom={minZoom}
-          maxZoom={maxZoom}
+          // center={center}
+          // zoom={zoom}
+          // minZoom={minZoom}
+          // maxZoom={maxZoom}
           containerStyle={{
             width: '100vw',
             height: window.innerHeight
           }}
-          onStyleLoad={onMapLoad}
-          onMoveEnd={(map) => {updateBounds(map.getBounds())}}
-          attributionControl={false}
+          onStyleLoad={(map) => onMapLoad(map)}
+          onMoveEnd={(map) => {updateBounds(map.getBounds(), bounds)}}
+          // attributionControl={false}
         >
           <Layer type="symbol" id="marker" layout={{ 'icon-image': 'bicycle-15' }}>
-            { locations.map((location) => (
-              <Feature coordinates={[location.lon, location.lat]} key={location.stationId} />
+            {  locations && locations.map((location?:BikeRentalStationDetail) => (
+              location && <Feature coordinates={[location.lon, location.lat]} key={location.stationId} />
             ))}
           </Layer>
-        { locations.map((location) => (
-          <StationsInfoPopup key={location.stationId} location={location} />
+        { locations && locations.map((location?:BikeRentalStationDetail) => (
+          location && <StationsInfoPopup key={location.stationId} location={location} />
         ))}
         <ZoomControl position="bottom-right" />
-      </MapboxMap>
+      </MapboxMap> */}
     </div>
   )
 }

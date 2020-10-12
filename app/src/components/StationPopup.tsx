@@ -5,10 +5,10 @@ import moment from 'moment-timezone';
 import { HorizontalBar } from 'react-chartjs-2';
 import Accordion from './Accordion';
 
-import { SelectedStation } from '../types';
+import { SelectedStation, BikeRentalStationDetail } from '../types';
 
 interface State {
-  updateSelectedStation: () => void;
+  updateSelectedStation: (newStation:BikeRentalStationDetail) => void;
   selectedStation: SelectedStation
 }
 
@@ -42,7 +42,7 @@ const StationPopup: React.FunctionComponent<State> = (props) => {
   }, [bikeTrends, dayNumber, averageBikesToday]);
 
   const updateSelectedStation = () => {
-    props.updateSelectedStation();
+    props.updateSelectedStation(stationId);
   }
 
   const chartBgColors = () => {

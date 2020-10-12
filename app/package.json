@@ -37,6 +37,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/geojson": "^7946.0.7",
+    "@types/lodash": "^4.14.162",
     "@types/mapbox-gl": "^1.12.3"
   },
   "eslintConfig": {

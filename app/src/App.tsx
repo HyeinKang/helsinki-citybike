@@ -13,7 +13,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div>
-        <CityBikeInfo />
+        {/* <CityBikeInfo /> */}
       </div>
     </ApolloProvider>
   );
