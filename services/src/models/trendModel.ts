@@ -1,4 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose'
+import * as mongoose from 'mongoose';
+
+import { Document, Schema } from 'mongoose'
 import { getbikeTrendDB } from '../config'
 
 export type StationCollection = {

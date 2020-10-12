@@ -1,42 +1,42 @@
 import { createApolloFetch } from 'apollo-fetch';
-import cron from 'node-cron';
-import { TrendModel } from '../models/trendModel'
+import * as cron from 'node-cron';
+
+import  { saveToDB } from './dbController'
 
 type Station = {
   stationId: string;
   bikesAvailable: number;
 };
 
-const trendsController = () => {
-  const fetch = createApolloFetch({
-    uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
-  });
-
-  cron.schedule('*/10 * * * *', () => {
-    fetch({
-      query: `query getAllStations {
-        bikeRentalStations {
-          stationId
-          bikesAvailable
-        }
+export const fetchBikes = async (): Promise<Station[]> => {
+    const fetch = createApolloFetch({
+      uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+    });
+    const allStationsQuery = `query getAllStations {
+      bikeRentalStations {
+        stationId
+        bikesAvailable
       }
-      `,
-    }).then(res => {
+    }`;
+    const bikeRentalStations = await fetch({ query: allStationsQuery,}).then(res => {
+      return res.data.bikeRentalStations;
+    });
+
+    return bikeRentalStations;
+}
+
+const trendsController = () => {
+  cron.schedule('*/10 * * * *', () => {
+    fetchBikes().then(data => {
       console.log('Available biked importing');
-      const bikeRentalStations = res.data.bikeRentalStations;
+      const bikeRentalStations = data;
       bikeRentalStations.forEach((station:Station) => {
-        const newTimeline = new TrendModel({
-          bikesAvailable: station.bikesAvailable,
-          dateTime: Date.now(),
-          stationId: station.stationId
-        });
-        newTimeline.save((err) => {
-          if (err) throw err;
-        });
+        saveToDB(station);
       });
+
+      return bikeRentalStations;
     });
   });
-
 }
 
 export { trendsController }
