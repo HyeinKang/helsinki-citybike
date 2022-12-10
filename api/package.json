@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
